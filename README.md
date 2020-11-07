@@ -3,6 +3,6 @@
 ### 功能模块
 ### 使用框架
 spring-boot  
-spring-data-jpa  
-spring-security  
+mybatis  
+shiro 
 spring-data-redis
