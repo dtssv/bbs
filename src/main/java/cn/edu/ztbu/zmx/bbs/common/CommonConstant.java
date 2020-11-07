@@ -8,5 +8,25 @@ package cn.edu.ztbu.zmx.bbs.common;
  * @Description
  * @since 1.0
  */
-public class CommonConstant {
+public interface CommonConstant {
+
+    public static final int YES = 1;
+
+    public static final int NO = 0;
+
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+
+    public enum YnEnum{
+        Y(Boolean.TRUE),
+        N(Boolean.FALSE);
+        Boolean flag;
+
+        YnEnum(Boolean flag){
+            this.flag = flag;
+        }
+
+        public Boolean getFlag() {
+            return flag;
+        }
+    }
 }
