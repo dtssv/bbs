@@ -10,13 +10,25 @@ package cn.edu.ztbu.zmx.bbs.common;
  */
 public interface CommonConstant {
 
-    public static final int YES = 1;
+    int YES = 1;
 
-    public static final int NO = 0;
+    int NO = 0;
 
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    String ROLE_ADMIN = "ROLE_ADMIN";
 
-    public enum YnEnum{
+    String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+    String DATE_PATTERN = "yyyy-MM-dd";
+
+    String TIME_PATTERN = "HH:mm:ss";
+
+    Integer USER_STATUS_OK = 1;
+
+    Integer USER_STATUS_DISABLE = -1;
+
+    Integer USER_STATUS_CANNOT_LOGIN = 0;
+
+    enum YnEnum{
         Y(Boolean.TRUE),
         N(Boolean.FALSE);
         Boolean flag;

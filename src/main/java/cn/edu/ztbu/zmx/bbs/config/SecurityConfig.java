@@ -4,6 +4,7 @@ import cn.edu.ztbu.zmx.bbs.service.impl.UserDetailsServiceImpl;
 import cn.edu.ztbu.zmx.bbs.util.MD5PasswordEncode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
         auth.userDetailsService(userDetailsService());
+
     }
 
     @Bean
@@ -46,6 +48,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        authenticationProvider.setSaltSource(saltSource);
         authenticationProvider.setPasswordEncoder(new MD5PasswordEncode());
         return authenticationProvider;
+    }
+
+    @Bean
+    public ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource(){
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:org/springframework/security/messages_zh_CN");
+        return messageSource;
     }
 
 }

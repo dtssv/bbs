@@ -44,6 +44,7 @@ public class User implements UserDetails {
     /**
      * password
      */
+    @Column(name = "password")
     private String password;
 
     /**
@@ -61,17 +62,54 @@ public class User implements UserDetails {
     /**
      * userNameCh
      */
-    private String nick_name;
+    @Column(name = "nick_name")
+    private String nickName;
 
     /**
      * registerTime
      */
+    @Column(name = "register_time")
     private LocalDateTime registerTime;
-
+    /**
+     *
+     */
+    @Column(name = "post_num")
+    private Integer postNum;
+    /**
+     *
+     */
+    @Column(name = "comment_num")
+    private Integer commentNum;
+    /**
+     *
+     */
+    @Column(name = "status")
+    private Integer status;
+    /**
+     *
+     */
+    @Column(name = "yn")
+    private Boolean yn = Boolean.FALSE;
+    /**
+     *
+     */
+    @Column(name = "creator")
+    private String creator;
+    /**
+     *
+     */
+    @Column(name = "create_time")
+    private LocalDateTime createTime;
     /**
      * modifyTime
      */
+    @Column(name = "modify_time")
     private LocalDateTime modifyTime;
+    /**
+     *
+     */
+    @Column(name = "modifier")
+    private String modifier;
     /**
      * admin
      */
@@ -108,6 +146,11 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return Boolean.TRUE;
+        return status != null && !status.equals(CommonConstant.USER_STATUS_CANNOT_LOGIN);
+    }
+
+    @Override
+    public String getPassword(){
+        return this.password;
     }
 }
