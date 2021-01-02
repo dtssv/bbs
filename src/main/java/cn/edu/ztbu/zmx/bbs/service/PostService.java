@@ -1,5 +1,8 @@
 package cn.edu.ztbu.zmx.bbs.service;
 
+import cn.edu.ztbu.zmx.bbs.domain.Post;
+import org.springframework.data.domain.Page;
+
 /**
  * @program bbs.PostService
  * @author: zhaomengxin
@@ -7,4 +10,25 @@ package cn.edu.ztbu.zmx.bbs.service;
  * @Description:
  */
 public interface PostService {
+    /**
+     *
+     * @param title
+     * @return
+     */
+    Page<Post> findByTitleOrAuthor(String title,Integer pageNum,Integer pageSize);
+
+    /**
+     *
+     * @param categoryId
+     * @return
+     */
+    Page<Post> findByCategory(Long categoryId,Integer pageNum,Integer pageSize);
+
+    /**
+     *
+     * @param post
+     * @return
+     */
+    Post save(Post post);
+
 }

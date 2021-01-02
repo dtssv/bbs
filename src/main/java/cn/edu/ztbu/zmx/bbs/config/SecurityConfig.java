@@ -5,8 +5,10 @@ import cn.edu.ztbu.zmx.bbs.util.MD5PasswordEncode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,10 +31,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/").authenticated()
+                .antMatchers("/private**").authenticated()
                 .anyRequest().permitAll()
-                .and().csrf().disable().formLogin().failureUrl("/error");
+                .and().csrf().disable().formLogin().loginPage("/login").failureUrl("/error");
     }
+
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
         auth.userDetailsService(userDetailsService());
@@ -43,9 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
-//        ReflectionSaltSource saltSource = new ReflectionSaltSource();
-//        saltSource.setUserPropertyToUse("salt");
-//        authenticationProvider.setSaltSource(saltSource);
         authenticationProvider.setPasswordEncoder(new MD5PasswordEncode());
         return authenticationProvider;
     }
@@ -57,4 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return messageSource;
     }
 
+    @Bean
+    public AuthenticationManager authenticationManager()throws Exception{
+        return super.authenticationManager();
+    }
 }

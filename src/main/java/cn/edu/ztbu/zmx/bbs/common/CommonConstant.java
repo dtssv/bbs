@@ -28,6 +28,10 @@ public interface CommonConstant {
 
     Integer USER_STATUS_CANNOT_LOGIN = 0;
 
+    Integer ZERO = 0;
+
+    Integer ONE = 1;
+
     enum YnEnum{
         Y(Boolean.TRUE),
         N(Boolean.FALSE);

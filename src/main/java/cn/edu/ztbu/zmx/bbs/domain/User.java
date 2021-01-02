@@ -8,15 +8,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-/**
+/**csdn
  * @author zhaomengxin
  * @version 1.0
  * @program bbs.User
@@ -33,13 +30,14 @@ public class User implements UserDetails {
      * id
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
      * userName
      */
     @Column(name = "user_name")
-    private String userName;
+    private String username;
 
     /**
      * password
@@ -126,7 +124,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.userName;
+        return this.username;
     }
 
     @Override

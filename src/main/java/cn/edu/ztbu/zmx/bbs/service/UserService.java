@@ -1,5 +1,8 @@
 package cn.edu.ztbu.zmx.bbs.service;
 
+import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
+import cn.edu.ztbu.zmx.bbs.vo.UserRegisterVo;
+
 /**
  * @author zhaomengxin
  * @version 1.0
@@ -9,4 +12,10 @@ package cn.edu.ztbu.zmx.bbs.service;
  * @since 1.0
  */
 public interface UserService {
+    /**
+     *
+     * @param userRegisterVo
+     * @return
+     */
+    ResultVo register(UserRegisterVo userRegisterVo);
 }

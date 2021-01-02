@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     hikari:
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
       minimum-idle: 5
       maximum-pool-size: 15
       auto-commit: true
@@ -12,13 +12,19 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
       connection-test-query: select 1
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/bbs?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
     username: root
     password: 123456
-    type: com.zaxxer.hikari.HikariDataSource
   redis:
     host: localhost
     port: 6379
   mvc:
     view:
       suffix: .html
+      prefix: /html/
+  jpa:
+    database: mysql
+  resources:
+    static-locations: classpath:/static/
