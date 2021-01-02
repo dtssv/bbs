@@ -26,4 +26,13 @@ public class UserRegisterVo {
      *
      */
     private String rePassword;
+    /**
+     *
+     */
+    private String phone;
+
+    /**
+     * email
+     */
+    private String email;
 }
