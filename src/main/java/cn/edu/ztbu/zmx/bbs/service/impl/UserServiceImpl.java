@@ -6,6 +6,7 @@ import cn.edu.ztbu.zmx.bbs.repository.UserRepository;
 import cn.edu.ztbu.zmx.bbs.service.UserService;
 import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserRegisterVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +31,7 @@ public class UserServiceImpl implements UserService {
             return ResultVo.fail("用户名已存在");
         }
         user = new User();
-        user.setUsername(userRegisterVo.getUsername());
-        user.setPassword(userRegisterVo.getPassword());
-        user.setNickName(userRegisterVo.getNickName());
+        BeanUtils.copyProperties(userRegisterVo,user);
         user.setCreator(userRegisterVo.getUsername());
         user.setModifier(user.getCreator());
         user.setRegisterTime(LocalDateTime.now());
