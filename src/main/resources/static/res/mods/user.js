@@ -24,6 +24,8 @@ layui.define(['laypage', 'fly', 'element', 'flow','form'], function(exports){
     ,minemsg: $('#LAY_minemsg')
     ,infobtn: $('#LAY_btninfo')
   };
+  
+
   form.on('submit(reg)', function(data){
     var field = data.field;
     if(field.password != field.rePassword){

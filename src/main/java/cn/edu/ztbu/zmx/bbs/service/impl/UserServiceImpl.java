@@ -8,7 +8,9 @@ import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserRegisterVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +34,7 @@ public class UserServiceImpl implements UserService {
         }
         user = new User();
         BeanUtils.copyProperties(userRegisterVo,user);
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         user.setCreator(userRegisterVo.getUsername());
         user.setModifier(user.getCreator());
         user.setRegisterTime(LocalDateTime.now());

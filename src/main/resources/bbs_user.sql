@@ -3,7 +3,7 @@ create table user
     id            bigint auto_increment
         primary key,
     user_name     varchar(32) default ''                not null comment '登录用户名',
-    password      varchar(32) default ''                not null comment '密码',
+    password      varchar(100) default ''                not null comment '密码',
     phone         varchar(16) default ''                null comment '手机号',
     email         varchar(32) default ''                null comment '邮箱',
     nick_name     varchar(16) default ''                null comment '昵称',

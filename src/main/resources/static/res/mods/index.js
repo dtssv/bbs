@@ -37,7 +37,21 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     }
   };
 
-
+  $.ajax({
+    url:'/loginInfo',
+    type:'post',
+    dataType:'json',
+    success:function (res) {
+      if(res.code === 1){
+        $("#username-cite").empty().html(res.data);
+        $("#loginedSpan").show();
+        $("#loginSpan").hide();
+      }else{
+        $("#loginedSpan").hide();
+        $("#loginSpan").show();
+      }
+    }
+  });
   //数字前置补零
   layui.laytpl.digit = function(num, length, end){
     var str = '';
