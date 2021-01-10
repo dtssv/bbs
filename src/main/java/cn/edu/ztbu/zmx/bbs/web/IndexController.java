@@ -17,10 +17,9 @@ public class IndexController {
         return "index";
     }
 
-    @ResponseBody
-    @RequestMapping(value = "admin/index")
+    @RequestMapping(value = "post/index")
     public String adminIndex(){
-        return "adminIndex";
+        return "post/index";
     }
 
     @RequestMapping(value = "login")
