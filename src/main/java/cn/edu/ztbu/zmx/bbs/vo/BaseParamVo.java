@@ -13,9 +13,9 @@ public class BaseParamVo {
     /**
      *
      */
-    private int pageSize;
+    private Integer pageSize;
     /**
      *
      */
-    private int pageNum;
+    private Integer pageNum;
 }

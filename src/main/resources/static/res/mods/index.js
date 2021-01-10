@@ -36,22 +36,63 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
       obj.value = result.join('');
     }
   };
-
+  //登录态
   $.ajax({
     url:'/loginInfo',
     type:'post',
     dataType:'json',
     success:function (res) {
       if(res.code === 1){
-        $("#username-cite").empty().html(res.data);
-        $("#loginedSpan").show();
-        $("#loginSpan").hide();
+        $("#username-cite").empty().html(res.data.nickName);
+        $(".loginedItem").show();
+        $(".loginItem").hide();
       }else{
-        $("#loginedSpan").hide();
-        $("#loginSpan").show();
+        $(".loginedItem").hide();
+        $(".loginItem").show();
       }
     }
   });
+
+  indexPost();
+  //首页文章
+  function indexPost(data){
+    $.ajax({
+      url:'/post/pagePost',
+      type:'post',
+      dataType:'json',
+      data:data,
+      success:function (res) {
+        if(res.code === 1){
+          var data = res.data.content;
+          var html = "";
+          for(var i in data){
+            var item = data[i];
+            html += '        <li>' +
+                '            <h2>' +
+                '              <a href="post/detail.html">' + item.title + '</a>' +
+                '            </h2>' +
+                '            <div class="fly-list-info">' +
+                '              <a href="privatehome.html" link>' +
+                '                <cite>' + item.nickName + '</cite>' +
+                '              </a>' +
+                '              <span>刚刚</span>' +
+                '              <span class="fly-list-nums"> ' +
+                '                <i class="iconfont icon-pinglun1" title="回复"></i>' + item.commentNum +
+                '              </span>\n' +
+                '            </div>\n' +
+                '            <div class="fly-list-badge">';
+            if(item.cream){
+              html + '<span class="layui-badge layui-bg-red">精帖</span>';
+            }
+            html +=
+                '            </div>' +
+                '          </li>';
+          }
+          $('#index-post').empty().html(html);
+        }
+      }
+    });
+  }
   //数字前置补零
   layui.laytpl.digit = function(num, length, end){
     var str = '';
@@ -112,7 +153,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
       var html = ['<div class="layui-unselect fly-edit">'
         ,'<span type="face" title="插入表情"><i class="iconfont icon-yxj-expression" style="top: 1px;"></i></span>'
         ,'<span type="picture" title="插入图片：img[src]"><i class="iconfont icon-tupian"></i></span>'
-        ,'<span type="href" title="超链接格式：a(href)[text]"><i class="iconfont icon-lianjie"></i></span>'
+        ,'<span type="href" title="超链接格式：a(href)[text]"><i class="iconfont icon-lianpost"></i></span>'
         ,'<span type="code" title="插入代码或引用"><i class="iconfont icon-emwdaima" style="top: 1px;"></i></span>'
         ,'<span type="hr" title="插入水平线">hr</span>'
         ,'<span type="yulan" title="预览"><i class="iconfont icon-yulan1"></i></span>'
@@ -141,7 +182,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
         ,picture: function(editor){ //插入图片
           layer.open({
             type: 1
-            ,id: 'fly-jie-upload'
+            ,id: 'fly-post-upload'
             ,title: '插入图片'
             ,area: 'auto'
             ,shade: false
@@ -627,7 +668,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     ,click: function(type){
       if(type === 'bar1'){
         layer.msg('打开 index.js，开启发表新帖的路径');
-        //location.href = 'jie/add.html';
+        //location.href = 'post/add.html';
       }
     }
   });

@@ -1,13 +1,13 @@
 package cn.edu.ztbu.zmx.bbs.web;
 
 import cn.edu.ztbu.zmx.bbs.domain.User;
+import cn.edu.ztbu.zmx.bbs.util.LoginContext;
 import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
-import org.springframework.security.core.context.SecurityContextImpl;
+import cn.edu.ztbu.zmx.bbs.vo.UserVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpSession;
 
 @Controller
 public class IndexController {
@@ -40,11 +40,13 @@ public class IndexController {
 
     @ResponseBody
     @RequestMapping(value = "loginInfo")
-    public ResultVo loginInfo(HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
-        if(securityContext != null){
-            return ResultVo.success(((User)securityContext.getAuthentication().getPrincipal()).getUsername());
-        }else{
+    public ResultVo loginInfo(){
+        User user = LoginContext.getLoginUser();
+        if(user != null){
+            UserVo userVo = new UserVo();
+            BeanUtils.copyProperties(user,userVo);
+            return ResultVo.success(userVo);
+        } else{
             return ResultVo.fail("未登录");
         }
     }

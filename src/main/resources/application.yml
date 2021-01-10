@@ -26,5 +26,9 @@ spring:
       prefix: /html/
   jpa:
     database: mysql
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   resources:
     static-locations: classpath:/static/

@@ -1,5 +1,9 @@
 package cn.edu.ztbu.zmx.bbs.service;
 
+import cn.edu.ztbu.zmx.bbs.domain.Category;
+
+import java.util.List;
+
 /**
  * @program bbs.CategoryService
  * @author: zhaomengxin
@@ -7,4 +11,6 @@ package cn.edu.ztbu.zmx.bbs.service;
  * @Description:
  */
 public interface CategoryService {
+
+    List<Category> findAll();
 }

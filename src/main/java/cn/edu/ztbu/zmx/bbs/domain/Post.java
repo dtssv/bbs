@@ -2,10 +2,7 @@ package cn.edu.ztbu.zmx.bbs.domain;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -20,6 +17,7 @@ import java.time.LocalDateTime;
 public class Post {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "title")
@@ -41,7 +39,7 @@ public class Post {
     private Long categoryId;
 
     @Column(name = "category_name")
-    private LocalDateTime categoryName;
+    private String categoryName;
 
     @Column(name = "comment_num")
     private Integer commentNum;

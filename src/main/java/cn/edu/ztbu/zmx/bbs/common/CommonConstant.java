@@ -30,6 +30,8 @@ public interface CommonConstant {
 
     Integer ZERO = 0;
 
+    Integer DEFAULT_PAGE_SIZE = 10;
+
     Integer ONE = 1;
 
     enum YnEnum{

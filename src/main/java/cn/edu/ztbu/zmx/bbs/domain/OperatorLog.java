@@ -2,10 +2,7 @@ package cn.edu.ztbu.zmx.bbs.domain;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -20,6 +17,7 @@ import java.time.LocalDateTime;
 public class OperatorLog {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "operator_key")
