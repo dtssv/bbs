@@ -1,5 +1,7 @@
 package cn.edu.ztbu.zmx.bbs.common;
 
+import java.util.Objects;
+
 /**
  * @author zhaomengxin
  * @version 1.0
@@ -34,6 +36,18 @@ public interface CommonConstant {
 
     Integer ONE = 1;
 
+    Integer SEX_DEFAULT = 0;
+
+    Integer SEX_MAN = 1;
+
+    Integer SEX_WOMAN = 2;
+
+    String DEFAULT_HEAD_URL = "../../res/images/head/head_default.png";
+
+    String MAN_HEAD_URL = "../../res/images/head/head_boy.png";
+
+    String WOMAN_HEAD_URL = "../../res/images/head/head_girl.png";
+
     enum YnEnum{
         Y(Boolean.TRUE),
         N(Boolean.FALSE);
@@ -45,6 +59,55 @@ public interface CommonConstant {
 
         public Boolean getFlag() {
             return flag;
+        }
+    }
+
+
+    /**
+     * @program bbs.SexEnum
+     * @author: zhaomengxin
+     * @date: 2021/1/17 13:30
+     * @Description:
+     */
+    enum SexEnum {
+        DEFAULT(CommonConstant.SEX_DEFAULT,"未知",CommonConstant.DEFAULT_HEAD_URL),
+        MAN(CommonConstant.SEX_MAN,"男性",CommonConstant.MAN_HEAD_URL),
+        WOMAN(CommonConstant.SEX_WOMAN,"女性",CommonConstant.WOMAN_HEAD_URL);
+
+        private Integer code;
+
+        private String desc;
+
+        private String headUrl;
+
+        SexEnum(Integer code,String desc,String headUrl){
+            this.code = code;
+            this.desc = desc;
+            this.headUrl = headUrl;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public String getHeadUrl() {
+            return headUrl;
+        }
+
+        public static SexEnum fromCode(Integer code){
+            if(Objects.isNull(code)){
+                return DEFAULT;
+            }
+            for (SexEnum sexEnum : SexEnum.values()) {
+                if(sexEnum.code.equals(code)){
+                    return sexEnum;
+                }
+            }
+            return DEFAULT;
         }
     }
 }

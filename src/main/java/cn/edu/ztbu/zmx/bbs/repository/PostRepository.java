@@ -25,9 +25,9 @@ public interface PostRepository extends JpaRepository<Post,Long>, JpaSpecificati
 
     /**
      *
-     * @param categoryId
-     * @param pageable
+     * @param id
+     * @param yn
      * @return
      */
-    Page<Post> findAllByCategoryId(Long categoryId,Pageable pageable);
+    Post getPostByIdAndYn(Long id,Boolean yn);
 }

@@ -46,6 +46,17 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
         $("#username-cite").empty().html(res.data.nickName);
         $(".loginedItem").show();
         $(".loginItem").hide();
+        if(res.data.headPhoto){
+          $("#headPhotoItem").attr("src",res.data.headPhoto);
+        }else{
+          if(res.data.sex && res.data.sex == 1){
+            $("#headPhotoItem").attr("src","../../res/images/head/head_boy.png");
+          }else if(res.data.sex && res.data.sex == 2){
+            $("#headPhotoItem").attr("src","../../res/images/head/head_girl.png");
+          }else{
+            $("#headPhotoItem").attr("src","../../res/images/head/head_default.png");
+          }
+        }
       }else{
         $(".loginedItem").hide();
         $(".loginItem").show();
@@ -53,45 +64,38 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     }
   });
 
-  indexPost();
+  category();
   //首页文章
-  function indexPost(data){
+
+
+  function category(){
+    var categoryId = getUrlParam('categoryId');
+    categoryId = parseInt(categoryId);
     $.ajax({
-      url:'/post/pagePost',
-      type:'post',
+      url:'/category/findAll',
+      type:'GET',
       dataType:'json',
-      data:data,
       success:function (res) {
         if(res.code === 1){
-          var data = res.data.content;
+          var data = res.data;
           var html = "";
-          for(var i in data){
+          for(var i in data) {
             var item = data[i];
-            html += '        <li>' +
-                '            <h2>' +
-                '              <a href="post/detail.html">' + item.title + '</a>' +
-                '            </h2>' +
-                '            <div class="fly-list-info">' +
-                '              <a href="privatehome.html" link>' +
-                '                <cite>' + item.nickName + '</cite>' +
-                '              </a>' +
-                '              <span>刚刚</span>' +
-                '              <span class="fly-list-nums"> ' +
-                '                <i class="iconfont icon-pinglun1" title="回复"></i>' + item.commentNum +
-                '              </span>\n' +
-                '            </div>\n' +
-                '            <div class="fly-list-badge">';
-            if(item.cream){
-              html + '<span class="layui-badge layui-bg-red">精帖</span>';
+            if(categoryId && categoryId === item.id){
+              html += '<li><a style="color: #4f99cf" href="/post/index?categoryId=' + item.id + '">' + item.categoryName + '</a></li>';
+            }else{
+              html += '<li><a href="/post/index?categoryId=' + item.id + '">' + item.categoryName + '</a></li>';
             }
-            html +=
-                '            </div>' +
-                '          </li>';
           }
-          $('#index-post').empty().html(html);
+          $("#categoryItem").empty().html(html);
         }
       }
-    });
+    })
+  }
+  function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]); return null; //返回参数值
   }
   //数字前置补零
   layui.laytpl.digit = function(num, length, end){

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @program bbs.UserServiceImpl
@@ -44,7 +45,19 @@ public class UserServiceImpl implements UserService {
         user.setStatus(CommonConstant.USER_STATUS_OK);
         user.setCommentNum(CommonConstant.ZERO);
         user.setPostNum(CommonConstant.ZERO);
+        user.setSex(CommonConstant.SEX_DEFAULT);
+        user.setHeadPhoto(CommonConstant.SexEnum.fromCode(user.getSex()).getHeadUrl());
         userRepository.save(user);
         return ResultVo.success("");
+    }
+
+    @Override
+    public User getById(Long id) {
+        return userRepository.getOne(id);
+    }
+
+    @Override
+    public List<User> selectByIds(List<Long> ids) {
+        return userRepository.findAllById(ids);
     }
 }

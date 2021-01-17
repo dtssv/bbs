@@ -20,23 +20,6 @@ layui.define('fly', function(exports){
   };
 
 
-  $.ajax({
-    url:'/category/findAll',
-    method:'get',
-    dataType:'json',
-    success:function (res) {
-      if(res.code === 1){
-        var data = res.data;
-        var html = "";
-        for(var i in data){
-          var item = data[i];
-          html += "<option value='" + item.id + "'>" + item.categoryName + "</option>";
-        }
-        $("#addCategory").empty().html(html);
-        form.render("select");
-      }
-    }
-  })
 
   form.on('submit(addPost)', function(data){
     var field = data.field;

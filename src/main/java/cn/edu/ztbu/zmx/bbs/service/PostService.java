@@ -31,4 +31,11 @@ public interface PostService {
      */
     Post save(Post post);
 
+    /**
+     *
+     * @param id
+     * @return
+     */
+    Post findById(Long id);
+
 }

@@ -113,6 +113,11 @@ public class User implements UserDetails {
      */
     private Integer admin;
 
+    @Column(name = "head_photo")
+    private String headPhoto;
+
+    private Integer sex;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> roles = Lists.newArrayList();

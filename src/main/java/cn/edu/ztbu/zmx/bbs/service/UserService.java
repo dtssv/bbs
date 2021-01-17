@@ -1,7 +1,10 @@
 package cn.edu.ztbu.zmx.bbs.service;
 
+import cn.edu.ztbu.zmx.bbs.domain.User;
 import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserRegisterVo;
+
+import java.util.List;
 
 /**
  * @author zhaomengxin
@@ -18,4 +21,18 @@ public interface UserService {
      * @return
      */
     ResultVo register(UserRegisterVo userRegisterVo);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    User getById(Long id);
+
+    /**
+     *
+     * @param ids
+     * @return
+     */
+    List<User> selectByIds(List<Long> ids);
 }

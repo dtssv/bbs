@@ -92,4 +92,8 @@ public class PostServiceImpl implements PostService {
         return repository.save(post);
     }
 
+    @Override
+    public Post findById(Long id) {
+        return repository.getPostByIdAndYn(id,Boolean.FALSE);
+    }
 }

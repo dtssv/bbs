@@ -9,27 +9,38 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Objects;
+
 @Controller
 public class IndexController {
 
     @RequestMapping(value = {"index","/"})
     public String index(){
-        return "index";
+        return "/index";
     }
 
     @RequestMapping(value = "post/index")
-    public String adminIndex(){
-        return "post/index";
+    public String postIndex(){
+        return "/post/index";
+    }
+
+    @RequestMapping(value = "post/detail")
+    public String postDetail(){
+        return "/post/detail";
     }
 
     @RequestMapping(value = "login")
     public String login(){
-        return "login";
+        User user = LoginContext.getLoginUser();
+        if(Objects.nonNull(user)){
+            return "/index";
+        }
+        return "/login";
     }
 
     @RequestMapping(value = "reg")
     public String reg(){
-        return "reg";
+        return "/reg";
     }
 
     @RequestMapping(value = "forget")

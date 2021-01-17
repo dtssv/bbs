@@ -19,7 +19,7 @@ public class PostVo {
 
     private Long categoryId;
 
-    private String category;
+    private String categoryName;
 
     private String nickName;
 
@@ -28,4 +28,10 @@ public class PostVo {
     private Integer readNum;
 
     private Boolean cream;
+
+    private Boolean canEdit;
+
+    private String headUrl;
+
+    private Integer sex;
 }

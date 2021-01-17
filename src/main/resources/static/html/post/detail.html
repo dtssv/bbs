@@ -4,7 +4,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Fly Template v3.0，郑州工商学院论坛</title>
+  <title>郑州工商学院论坛</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="keywords" content="郑州工商学院论坛">
   <meta name="description" content="郑州工商学院论坛">
@@ -18,70 +18,58 @@
     <a class="fly-logo" href="/">
       <img src="../../res/images/logo.png" alt="layui">
     </a>
-    
     <ul class="layui-nav fly-nav-user">
-      
+
       <!-- 未登入的状态 -->
-      <!--
+      <span class="loginItem">
       <li class="layui-nav-item">
-        <a class="iconfont icon-touxiang layui-hide-xs" href="login"></a>
-      </li>
-      <li class="layui-nav-item">
-        <a href="login">登入</a>
+        <a class="iconfont icon-touxiang layui-hide-xs" href="/login"></a>
       </li>
       <li class="layui-nav-item">
-        <a href="reg">注册</a>
+        <a href="/login">登入</a>
       </li>
-      <li class="layui-nav-item layui-hide-xs">
-        <a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
+      <li class="layui-nav-item">
+        <a href="/reg">注册</a>
       </li>
-      <li class="layui-nav-item layui-hide-xs">
-        <a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" class="iconfont icon-weibo"></a>
-      </li>
-       -->
-      
+      </span>
       <!-- 登入后的状态 -->
+      <span class="loginedItem">
       <li class="layui-nav-item">
         <a class="fly-nav-avatar" href="javascript:;">
-          <cite class="layui-hide-xs">贤心</cite>
-          <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
-          <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
-          <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+          <cite class="layui-hide-xs" id="username-cite"></cite>
+          <img id="headPhotoItem" src="">
         </a>
         <dl class="layui-nav-child">
-          <dd><a href="../privateset.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
-          <dd><a href="../privatemessage.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
-          <dd><a href="../privatehome.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+          <dd><a href="privateset.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+          <dd><a href="privatemessage.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+          <dd><a href="privatehome.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
           <hr style="margin: 5px 0;">
-          <dd><a href="" style="text-align: center;">退出</a></dd>
+          <dd><a href="/privatelogout/" style="text-align: center;">退出</a></dd>
         </dl>
       </li>
+      </span>
     </ul>
   </div>
 </div>
 
-<div class="layui-hide-xs">
-  <div class="fly-panel fly-column">
-    <div class="layui-container">
-      <ul class="layui-clear">
-        <li class="layui-hide-xs"><a href="/">首页</a></li> 
-        <li class="layui-this"><a href="">提问</a></li> 
-        <li><a href="">分享<span class="layui-badge-dot"></span></a></li> 
-        <li><a href="">讨论</a></li> 
-        <li><a href="">建议</a></li> 
-        <li><a href="">公告</a></li> 
-        <li><a href="">动态</a></li> 
-        <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li> 
-        
-        <!-- 用户登入后显示 -->
+<div class="fly-panel fly-column">
+  <div class="layui-container">
+    <ul class="layui-clear">
+      <span id="categoryItem">
+
+      </span>
+      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+
+      <!-- 用户登入后显示 -->
+      <span class="loginedItem">
         <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../privateindex.html">我发表的贴</a></li>
         <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../privateindex.html#collection">我收藏的贴</a></li>
-      </ul> 
-      
-      <div class="fly-column-right layui-hide-xs"> 
-        <span class="fly-search"><i class="layui-icon"></i></span> 
-        <a href="/my/add" class="layui-btn">发表新帖</a>
-      </div>
+      </span>
+    </ul>
+
+    <div class="fly-column-right layui-hide-xs">
+      <span class="fly-search"><i class="layui-icon"></i></span>
+      <a href="/my/add" class="layui-btn">发表新帖</a>
     </div>
   </div>
 </div>
@@ -90,70 +78,34 @@
   <div class="layui-row layui-col-space15">
     <div class="layui-col-md8 content detail">
       <div class="fly-panel detail-box">
-        <h1>Fly Template v3.0，郑州工商学院论坛</h1>
+        <h1 id="postTitle"></h1>
         <div class="fly-detail-info">
-          <!-- <span class="layui-badge">审核中</span> -->
-          <span class="layui-badge layui-bg-green fly-detail-column">动态</span>
-          
-          <span class="layui-badge" style="background-color: #999;">未结</span>
-          <!-- <span class="layui-badge" style="background-color: #5FB878;">已结</span> -->
-          
-          <span class="layui-badge layui-bg-black">置顶</span>
-          <span class="layui-badge layui-bg-red">精帖</span>
-          
-          <div class="fly-admin-box" data-id="123">
-            <span class="layui-btn layui-btn-xs post-admin" type="del">删除</span>
-            
-            <span class="layui-btn layui-btn-xs post-admin" type="set" field="stick" rank="1">置顶</span>
-            <!-- <span class="layui-btn layui-btn-xs post-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
-            
-            <span class="layui-btn layui-btn-xs post-admin" type="set" field="status" rank="1">加精</span>
-            <!-- <span class="layui-btn layui-btn-xs post-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> -->
-          </div>
+          <span class="layui-badge layui-bg-green fly-detail-column" id="postCategory"></span>
+          <span id="postCream" class="layui-badge layui-bg-red" >精帖</span>
           <span class="fly-list-nums"> 
-            <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> 66</a>
-            <i class="iconfont" title="人气">&#xe60b;</i> 99999
+            <a href="#comment"><i class="iconfont" title="回复">&#xe60c;</i><span id="postComment"></span></a>
+            <i class="iconfont" title="人气">&#xe60b;</i><span id="postRead"></span>
           </span>
         </div>
         <div class="detail-about">
           <a class="fly-avatar" href="../privatehome.html">
-            <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">
+            <img id="postHeadUrl" src="" alt="">
           </a>
           <div class="fly-detail-user">
             <a href="../privatehome.html" class="fly-link">
-              <cite>贤心</cite>
-              <i class="iconfont icon-renzheng" title="认证信息：{{ rows.user.approve }}"></i>
-              <i class="layui-badge fly-badge-vip">VIP3</i>
+              <cite id="postAuthor"></cite>
             </a>
-            <span>2017-11-30</span>
+            <span id="postCreateDate"></span>
           </div>
           <div class="detail-hits" id="LAY_postAdmin" data-id="123">
-            <span style="padding-right: 10px; color: #FF7200">悬赏：60飞吻</span>  
-            <span class="layui-btn layui-btn-xs post-admin" type="edit"><a href="/my/add">编辑此贴</a></span>
+            <span><a href="#comment"><i class="iconfont" title="回复">&#xe60c;</i></a></span>
+            <span style="padding-right: 10px;" class="layui-btn layui-btn-xs" type="edit" id="postCanEdit">
+              <a id="postEdit" href="/my/add?postId" style="color: white">编辑此贴</a>
+            </span>
           </div>
         </div>
-        <div class="detail-body photos">
-          <p>
-            该模版由 layui官方社区（<a href="http://fly.layui.com/" target="_blank">fly.layui.com</a>）倾情提供，只为表明我们对 layui 执着的信念、以及对未来持续加强的承诺。该模版基于 layui 搭建而成，可作为极简通用型社区的页面支撑。
-          </p>
-          <p>更新日志：</p>
-<pre>
-# v3.0 2017-11-30
-* 采用 layui 2.2.3 作为 UI 支撑
-* 全面同步最新的 Fly 社区风格，各种细节得到大幅优化
-* 更友好的响应式适配能力
-</pre>
-          
-          下载<hr>
-          <p>
-            官网：<a href="http://www.layui.com/template/fly/" target="_blank">http://www.layui.com/template/fly/</a><br>
-            码云：<a href="https://gitee.com/sentsin/fly/" target="_blank">https://gitee.com/sentsin/fly/</a><br>
-            GitHub：<a href="https://github.com/layui/fly" target="_blank">https://github.com/layui/fly</a>
-          </p>
-          封面<hr>
-          <p>
-            <img src="../../res/images/fly.jpg" alt="Fly社区">
-          </p>
+        <div class="detail-body photos" id="postBody">
+
         </div>
       </div>
 
@@ -166,7 +118,7 @@
           <li data-id="111" class="post-daan">
             <a name="item-1111111111"></a>
             <div class="detail-about detail-about-reply">
-              <a class="fly-avatar" href="">
+              <a class="fly-avatar" style="top: 3px;" href="">
                 <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt=" ">
               </a>
               <div class="fly-detail-user">
@@ -266,8 +218,8 @@
       </div>
     </div>
     <div class="layui-col-md4">
-      <dl class="fly-panel fly-list-one">
-        <dt class="fly-panel-title">本周热议</dt>
+      <dl class="fly-panel fly-list-one" id="noticeDl">
+        <dt class="fly-panel-title">公告</dt>
         <dd>
           <a href="">郑州工商学院论坛</a>
           <span><i class="iconfont icon-pinglun1"></i> 16</span>
@@ -309,25 +261,31 @@
           <span><i class="iconfont icon-pinglun1"></i> 16</span>
         </dd>
 
-        <!-- 无数据时 -->
-        <!--
-        <div class="fly-none">没有相关数据</div>
-        -->
       </dl>
 
-      <div class="fly-panel" style="padding: 20px 0; text-align: center;">
-        <img src="../../res/images/weixin.jpg" style="max-width: 100%;" alt="layui">
-        <p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>
+    </div>
+    <div class="layui-col-md4">
+
+      <div class="fly-panel fly-link">
+        <h3 class="fly-panel-title">友情链接</h3>
+        <dl class="fly-panel-main">
+          <dd><a href="http://www.ztbu.edu.cn/" target="_blank">郑州工商学院</a><dd>
+          <dd><a href="http://www.ztbu.edu.cn/tsg" target="_blank">郑州工商学院图书馆</a><dd>
+        </dl>
       </div>
+      </dl>
 
     </div>
   </div>
+
+</div>
 </div>
 
 <div class="fly-footer">
   <p><a href="http://www.ztbu.edu.cn/" target="_blank">郑州工商学院</a> 2021 &copy; <a href="#" >赵梦鑫</a></p>
 </div>
 <script src="../../res/layui/layui.js"></script>
+<script src="../../res/js/postDetail.js"></script>
 <script>
 layui.cache.page = 'post';
 layui.cache.user = {

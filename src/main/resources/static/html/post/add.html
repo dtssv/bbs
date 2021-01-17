@@ -22,13 +22,13 @@
       <!-- 未登入的状态 -->
       <!--
       <li class="layui-nav-item">
-        <a class="iconfont icon-touxiang layui-hide-xs" href="login"></a>
+        <a class="iconfont icon-touxiang layui-hide-xs" href="/login"></a>
       </li>
       <li class="layui-nav-item">
-        <a href="login">登入</a>
+        <a href="/login">登入</a>
       </li>
       <li class="layui-nav-item">
-        <a href="reg">注册</a>
+        <a href="/reg">注册</a>
       </li>
       <li class="layui-nav-item layui-hide-xs">
         <a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
@@ -43,6 +43,7 @@
       <li class="layui-nav-item">
         <a class="fly-nav-avatar" href="javascript:;">
           <cite class="layui-hide-xs" id="username-cite"></cite>
+          <img id="headPhotoItem" src="">
         </a>
         <dl class="layui-nav-child">
           <dd><a href="privateset.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
@@ -81,7 +82,7 @@
                   <label for="L_title" class="layui-form-label">标题</label>
                   <div class="layui-input-block">
                     <input type="text" id="L_title" name="title" required lay-verify="required" autocomplete="off" class="layui-input">
-                    <!-- <input type="hidden" name="id" value="{{d.edit.id}}"> -->
+                    <input type="hidden" name="id" id="L_id">
                   </div>
                 </div>
               </div>
@@ -106,6 +107,7 @@
 </div>
 
 <script src="../../res/layui/layui.js"></script>
+<script src="../../res/js/postEdit.js"></script>
 <script>
 layui.cache.page = 'post';
 layui.cache.user = {

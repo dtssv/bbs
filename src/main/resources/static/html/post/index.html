@@ -23,13 +23,13 @@
       <!-- 未登入的状态 -->
       <span class="loginItem">
       <li class="layui-nav-item">
-        <a class="iconfont icon-touxiang layui-hide-xs" href="login"></a>
+        <a class="iconfont icon-touxiang layui-hide-xs" href="/login"></a>
       </li>
       <li class="layui-nav-item">
-        <a href="login">登入</a>
+        <a href="/login">登入</a>
       </li>
       <li class="layui-nav-item">
-        <a href="reg">注册</a>
+        <a href="/reg">注册</a>
       </li>
       </span>
       <!-- 登入后的状态 -->
@@ -37,6 +37,7 @@
       <li class="layui-nav-item">
         <a class="fly-nav-avatar" href="javascript:;">
           <cite class="layui-hide-xs" id="username-cite"></cite>
+          <img id="headPhotoItem" src="">
         </a>
         <dl class="layui-nav-child">
           <dd><a href="privateset.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
@@ -54,19 +55,15 @@
 <div class="fly-panel fly-column">
   <div class="layui-container">
     <ul class="layui-clear">
-      <li class="layui-hide-xs"><a href="/">首页</a></li> 
-      <li class="layui-this"><a href="">提问</a></li> 
-      <li><a href="">分享<span class="layui-badge-dot"></span></a></li> 
-      <li><a href="">讨论</a></li> 
-      <li><a href="">建议</a></li> 
-      <li><a href="">公告</a></li> 
-      <li><a href="">动态</a></li> 
+      <span id="categoryItem">
+
+      </span>
       <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li> 
       
       <!-- 用户登入后显示 -->
       <span class="loginedItem">
-      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../privateindex.html">我发表的贴</a></li>
-      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../privateindex.html#collection">我收藏的贴</a></li>
+        <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../privateindex.html">我发表的贴</a></li>
+        <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="../privateindex.html#collection">我收藏的贴</a></li>
       </span>
     </ul> 
     
@@ -82,7 +79,7 @@
     <div class="layui-col-md8">
       <div class="fly-panel" style="margin-bottom: 0;">
 
-        <ul class="fly-list">          
+        <ul class="fly-list" id="category-post">
 
         </ul>
         
@@ -95,7 +92,55 @@
       </div>
     </div>
     <div class="layui-col-md4">
-      
+      <dl class="fly-panel fly-list-one" id="noticeDl">
+        <dt class="fly-panel-title">公告</dt>
+        <dd>
+          <a href="">郑州工商学院论坛</a>
+          <span><i class="iconfont icon-pinglun1"></i> 16</span>
+        </dd>
+        <dd>
+          <a href="">郑州工商学院论坛</a>
+          <span><i class="iconfont icon-pinglun1"></i> 16</span>
+        </dd>
+        <dd>
+          <a href="">郑州工商学院论坛</a>
+          <span><i class="iconfont icon-pinglun1"></i> 16</span>
+        </dd>
+        <dd>
+          <a href="">郑州工商学院论坛</a>
+          <span><i class="iconfont icon-pinglun1"></i> 16</span>
+        </dd>
+        <dd>
+          <a href="">郑州工商学院论坛</a>
+          <span><i class="iconfont icon-pinglun1"></i> 16</span>
+        </dd>
+        <dd>
+          <a href="">郑州工商学院论坛</a>
+          <span><i class="iconfont icon-pinglun1"></i> 16</span>
+        </dd>
+        <dd>
+          <a href="">郑州工商学院论坛</a>
+          <span><i class="iconfont icon-pinglun1"></i> 16</span>
+        </dd>
+        <dd>
+          <a href="">郑州工商学院论坛</a>
+          <span><i class="iconfont icon-pinglun1"></i> 16</span>
+        </dd>
+        <dd>
+          <a href="">郑州工商学院论坛</a>
+          <span><i class="iconfont icon-pinglun1"></i> 16</span>
+        </dd>
+        <dd>
+          <a href="">郑州工商学院论坛</a>
+          <span><i class="iconfont icon-pinglun1"></i> 16</span>
+        </dd>
+
+        <!-- 无数据时 -->
+        <!--
+        <div class="fly-none">没有相关数据</div>
+        -->
+      </dl>
+
       <div class="fly-panel fly-link">
         <h3 class="fly-panel-title">友情链接</h3>
         <dl class="fly-panel-main">
@@ -103,8 +148,8 @@
           <dd><a href="http://www.ztbu.edu.cn/tsg" target="_blank">郑州工商学院图书馆</a><dd>
         </dl>
       </div>
-
     </div>
+
   </div>
 </div>
 <div class="fly-footer">
@@ -112,6 +157,7 @@
 </div>
 
 <script src="../../res/layui/layui.js"></script>
+<script src="../../res/js/postList.js"></script>
 <script>
 layui.cache.page = 'post';
 layui.cache.user = {

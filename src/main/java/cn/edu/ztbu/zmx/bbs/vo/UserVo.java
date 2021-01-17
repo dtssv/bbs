@@ -26,4 +26,8 @@ public class UserVo {
     private LocalDateTime createTime;
 
     private Integer admin;
+
+    private String headPhoto;
+
+    private Integer sex;
 }
