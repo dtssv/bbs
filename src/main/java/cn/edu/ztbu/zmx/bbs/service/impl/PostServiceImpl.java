@@ -88,6 +88,9 @@ public class PostServiceImpl implements PostService {
             post.setModifyTime(post.getCreateTime());
             post.setModifier(post.getCreator());
             post.setYn(Boolean.FALSE);
+            category.setLastPostTime(LocalDateTime.now());
+            category.setPostNum(category.getOrderNum() + 1);
+            categoryRepository.save(category);
         }
         return repository.save(post);
     }

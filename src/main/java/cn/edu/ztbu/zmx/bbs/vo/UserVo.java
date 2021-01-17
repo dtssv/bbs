@@ -30,4 +30,9 @@ public class UserVo {
     private String headPhoto;
 
     private Integer sex;
+
+
+    private String city;
+
+    private String sign;
 }

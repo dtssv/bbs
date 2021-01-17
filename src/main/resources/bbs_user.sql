@@ -14,6 +14,8 @@ create table user
     creator       varchar(64) default ''                not null comment '创建人',
     create_time   timestamp   default CURRENT_TIMESTAMP null comment '创建时间',
     modifier      varchar(64) default ''                null comment '修改人',
+    city          varchar(100) default ''                null comment '城市',
+    sign          varchar(200) default ''                null comment '签名',
     modify_time   timestamp   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '修改时间',
     status        int         default 1                 null comment '状态，1：正常，0：禁止登录，-1：禁止发言',
     sex           int         default 0                 null comment '状态，1：男，0：未知，2：女',

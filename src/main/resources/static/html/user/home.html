@@ -19,34 +19,43 @@
     </a>
     
     <ul class="layui-nav fly-nav-user">
-      <!-- 登入后的状态 -->
+      <span class="loginItem">
       <li class="layui-nav-item">
-        <a class="fly-nav-avatar" href="javascript:;">
-          <cite class="layui-hide-xs">贤心</cite>
-          <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
-          <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
-          <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
-        </a>
-        <dl class="layui-nav-child">
-          <dd><a href="..//my/set"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
-          <dd><a href="../privatemessage.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
-          <dd><a href="/my/home"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
-          <hr style="margin: 5px 0;">
-          <dd><a href="" style="text-align: center;">退出</a></dd>
-        </dl>
+        <a class="iconfont icon-touxiang layui-hide-xs" href="/login"></a>
       </li>
+      <li class="layui-nav-item">
+        <a href="/login">登入</a>
+      </li>
+      <li class="layui-nav-item">
+        <a href="/reg">注册</a>
+      </li>
+      </span>
+      <span class="loginedItem">
+        <li class="layui-nav-item">
+          <a class="fly-nav-avatar" href="javascript:;">
+            <cite class="layui-hide-xs" id="username-cite"></cite>
+            <img id="headPhotoItem" src="">
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="/my/set"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+            <dd><a href="/my/home"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+            <hr style="margin: 5px 0;">
+            <dd><a href="/logout" style="text-align: center;">退出</a></dd>
+          </dl>
+        </li>
+      </span>
     </ul>
   </div>
 </div>
 
-<div class="fly-home fly-panel" style="background-image: url();">
-  <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">
-  <i class="iconfont icon-renzheng" title="Fly社区认证"></i>
+<div class="fly-home fly-panel">
+  <img id="userHeadUrl">
   <h1>
-    贤心
-    <i class="iconfont icon-nan"></i>
+    <span id="userNickName"></span>
+    <i class="iconfont icon-nan" id="userSexMan"></i>
+    <i class="iconfont icon-nv" id="userSexWoman"></i>
+    <span style="color:#c00;" id="userAdmin">（管理员）</span>
     <!-- <i class="iconfont icon-nv"></i>  -->
-    <i class="layui-badge fly-badge-vip">VIP3</i>
     <!--
     <span style="color:#c00;">（管理员）</span>
     <span style="color:#5FB878;">（社区之光）</span>
@@ -54,20 +63,14 @@
     -->
   </h1>
 
-  <p style="padding: 10px 0; color: #5FB878;">认证信息：layui 作者</p>
 
   <p class="fly-home-info">
-    <i class="iconfont icon-kiss" title="飞吻"></i><span style="color: #FF7200;">66666 飞吻</span>
-    <i class="iconfont icon-shijian"></i><span>2015-6-17 加入</span>
-    <i class="iconfont icon-chengshi"></i><span>来自杭州</span>
+    <i class="iconfont icon-shijian"></i><span id="userCreateDate"></span>
+    <i class="iconfont icon-chengshi"></i><span id="userCity"></span>
   </p>
 
-  <p class="fly-home-sign">（人生仿若一场修行）</p>
+  <p class="fly-home-sign" id="userSign"></p>
 
-  <div class="fly-sns" data-user="">
-    <a href="javascript:;" class="layui-btn layui-btn-primary fly-imActive" data-type="addFriend">加为好友</a>
-    <a href="javascript:;" class="layui-btn layui-btn-normal fly-imActive" data-type="chat">发起会话</a>
-  </div>
 
 </div>
 
@@ -157,6 +160,7 @@ full: true
 </div>
 
 <script src="../../res/layui/layui.js"></script>
+<script src="../../res/js/userHome.js"></script>
 <script>
 layui.cache.page = 'user';
 layui.cache.user = {

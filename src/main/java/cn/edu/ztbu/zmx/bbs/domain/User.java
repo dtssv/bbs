@@ -118,6 +118,10 @@ public class User implements UserDetails {
 
     private Integer sex;
 
+    private String city;
+
+    private String sign;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> roles = Lists.newArrayList();

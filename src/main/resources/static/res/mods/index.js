@@ -57,7 +57,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
             $("#headPhotoItem").attr("src","../../res/images/head/head_default.png");
           }
         }
-        $(".user-home-index").attr("href","/user/home?userId=");
+        $(".user-home-index").attr("href","/user/home?userId=" + res.data.id);
       }else{
         $(".loginedItem").hide();
         $(".loginItem").show();
@@ -573,7 +573,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
           if(val.replace(/\s/g, '') === ''){
             return false;
           }
-          input.val('site:layui.com '+ input.val());
+          input.val('site:www.ztbu.edu.cn '+ input.val());
       });
       }
     })

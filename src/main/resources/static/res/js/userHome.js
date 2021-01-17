@@ -1,4 +1,3 @@
-var commentData = {};
 var detailId;
 layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(exports){
     var $ = layui.jquery
@@ -16,54 +15,52 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
         layer.alert('如果您非得使用 IE 浏览器访问Fly社区，那么请使用 IE8+');
     }
 
-    postDetail();
+    userDetail();
 
-    function postDetail() {
-        var postId = getUrlParam('postId');
-        postId = parseInt(postId);
-        detailId = postId;
-        commentData.postId = detailId;
+    function userDetail() {
+        var userId = getUrlParam('userId');
+        userId = parseInt(userId);
+        detailId = userId;
         $.ajax({
-            url:'/post/detail/0/' + postId,
+            url:'/user/detail?id=' + detailId,
             type:'GET',
             dataType:'json',
             success:function (res) {
-                postComment();
                 if(res.code === 1 && res.data){
                     var data = res.data;
-                    $(".user-home-index").attr("href","/user/home?userId=" + data.userId);
-                    $("#postCategory").empty().html(data.categoryName);
-                    $("#postTitle").empty().html(data.title);
-                    $("#postComment").empty().html(data.commentNum);
-                    $("#postRead").empty().html(data.readNum);
-                    $("#postHeadUrl").attr("alt",data.nickName);
-                    $("#postCreateDate").html(data.modifyTime);
+                    var headUrl;
                     if(data.headUrl){
-                        $("#postHeadUrl").attr("src",data.headUrl);
+                        headUrl=data.headUrl;
                     }else{
                         if(data.sex && data.sex == 1){
-                            $("#postHeadUrl").attr("src","../../res/images/head/head_boy.png");
+                            headUrl = "../../res/images/head/head_boy.png";
+                            $("#userSexMan").show();
+                            $("#userSexWoman").hide();
                         }else if(data.sex && data.sex == 2){
-                            $("#postHeadUrl").attr("src","../../res/images/head/head_girl.png");
+                            headUrl = "../../res/images/head/head_girl.png";
+                            $("#userSexMan").hide();
+                            $("#userSexWoman").show();
                         }else{
-                            $("#postHeadUrl").attr("src","../../res/images/head/head_default.png");
+                            headUrl = "../../res/images/head/head_default.png";
+                            $("#userSexMan").hide();
+                            $("#userSexWoman").hide();
                         }
                     }
-                    if(data.cream){
-                        $("#postCream").show();
+                    $("#userHeadUrl").attr("src",headUrl);
+                    $("#userHeadUrl").attr("alt",data.nickName);
+                    $("#userNickName").empty().html(data.nickName);
+                    if(data.admin === 1){
+                        $("#userAdmin").show();
                     }else{
-                        $("#postCream").hide();
+                        $("#userAdmin").hide();
                     }
-                    $("#postEdit").attr("href","/my/add?postId" + data.id);
-                    if(data.canEdit){
-                        $("#postCanEdit").show();
-                    }else{
-                        $("#postCanEdit").hide();
+                    $("#userCreateDate").empty().html(data.createTime);
+                    if(data.city){
+                        $("#userCity").empty().html('来自' + data.city);
                     }
-                    $("#postAuthor").empty().html(data.nickName);
-                    $("#postBody").empty().html(data.postBody);
+                    $("#userSign").empty().html(data.sign);
                 }else{
-                    window.location.href = '/';
+                    window.location.href='/index'
                 }
             }
         })
@@ -123,7 +120,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                             '            <a name="item"></a>' +
                             '            <div class="detail-about detail-about-reply">' +
                             '              <a class="fly-avatar" style="top: 3px;" href="/user/home?userId=' + item.userId +
-                            '">                <img src="' + headUrl + '" alt=" ' + item.nickName + '">' +
+                            '">              <img src="' + headUrl + '" alt=" ' + item.nickName + '">' +
                             '              </a>' +
                             '              <div class="fly-detail-user">' +
                             '                <a href="/user/home?userId=' + item.userId + '" class="fly-link">' +

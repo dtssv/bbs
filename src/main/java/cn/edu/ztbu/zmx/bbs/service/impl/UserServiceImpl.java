@@ -47,6 +47,8 @@ public class UserServiceImpl implements UserService {
         user.setPostNum(CommonConstant.ZERO);
         user.setSex(CommonConstant.SEX_DEFAULT);
         user.setHeadPhoto(CommonConstant.SexEnum.fromCode(user.getSex()).getHeadUrl());
+        user.setCity("");
+        user.setSign("");
         userRepository.save(user);
         return ResultVo.success("");
     }
