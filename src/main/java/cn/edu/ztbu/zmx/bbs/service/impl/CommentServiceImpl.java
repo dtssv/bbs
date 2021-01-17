@@ -87,6 +87,8 @@ public class CommentServiceImpl implements CommentService {
             post.setCommentNum(post.getCommentNum() + CommonConstant.ONE);
             post.setLastCommentTime(LocalDateTime.now());
             postRepository.save(post);
+            user.setCommentNum(user.getCommentNum() + CommonConstant.ONE);
+            userRepository.save(user);
         }else{
             comment = repository.getOne(vo.getId());
             if(!user.getId().equals(comment.getUserId())){

@@ -6,6 +6,7 @@ import cn.edu.ztbu.zmx.bbs.domain.Post;
 import cn.edu.ztbu.zmx.bbs.domain.User;
 import cn.edu.ztbu.zmx.bbs.repository.CategoryRepository;
 import cn.edu.ztbu.zmx.bbs.repository.PostRepository;
+import cn.edu.ztbu.zmx.bbs.repository.UserRepository;
 import cn.edu.ztbu.zmx.bbs.service.PostService;
 import cn.edu.ztbu.zmx.bbs.util.LoginContext;
 import com.google.common.collect.Lists;
@@ -34,6 +35,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public Page<Post> findByTitleOrAuthor(String title, Integer pageNum, Integer pageSize) {
@@ -89,8 +93,10 @@ public class PostServiceImpl implements PostService {
             post.setModifier(post.getCreator());
             post.setYn(Boolean.FALSE);
             category.setLastPostTime(LocalDateTime.now());
-            category.setPostNum(category.getOrderNum() + 1);
+            category.setPostNum(category.getPostNum()  + CommonConstant.ONE);
             categoryRepository.save(category);
+            loginUser.setPostNum(loginUser.getPostNum()  + CommonConstant.ONE);
+            userRepository.save(loginUser);
         }
         return repository.save(post);
     }
