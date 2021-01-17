@@ -5,7 +5,7 @@ create table comment
     user_id           int         default 0                 not null comment '用户id',
     nick_name         varchar(64) default ''                null comment '用户昵称',
     floor_num         int         default 2                 null comment '楼层',
-    comment_user_id   int         default 0                 not null comment '回复用户id',
+    comment_user_id   int         default 0                 null comment '回复用户id',
     comment_nick_name varchar(64) default ''                null comment '回复用户昵称',
     comment_body      text                                  null comment '回复内容',
     post_id           int         default 0                 not null comment '帖子ID',

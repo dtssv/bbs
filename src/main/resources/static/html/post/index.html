@@ -40,11 +40,10 @@
           <img id="headPhotoItem" src="">
         </a>
         <dl class="layui-nav-child">
-          <dd><a href="privateset.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
-          <dd><a href="privatemessage.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
-          <dd><a href="privatehome.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+          <dd><a href="/my/set"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+          <dd><a href="/my/home"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
           <hr style="margin: 5px 0;">
-          <dd><a href="/privatelogout/" style="text-align: center;">退出</a></dd>
+          <dd><a href="/logout" style="text-align: center;">退出</a></dd>
         </dl>
       </li>
       </span>
@@ -86,7 +85,7 @@
         <!-- <div class="fly-none">没有相关数据</div> -->
     
         <div style="text-align: center">
-          <div class="laypage-main"><span class="laypage-curr">1</span><a href="/post/page/2/">2</a><a href="/post/page/3/">3</a><a href="/post/page/4/">4</a><a href="/post/page/5/">5</a><span>…</span><a href="/post/page/148/" class="laypage-last" title="尾页">尾页</a><a href="/post/page/2/" class="laypage-next">下一页</a></div>
+          <div class="laypage-main" id="postPage"></div>
         </div>
 
       </div>

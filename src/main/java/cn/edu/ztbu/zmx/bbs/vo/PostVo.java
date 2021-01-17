@@ -2,6 +2,8 @@ package cn.edu.ztbu.zmx.bbs.vo;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * @program bbs.PostVo
  * @author: zhaomengxin
@@ -34,4 +36,7 @@ public class PostVo {
     private String headUrl;
 
     private Integer sex;
+
+    private Long userId;
+    private LocalDateTime modifyTime;
 }

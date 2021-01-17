@@ -56,7 +56,11 @@ public class PostController {
         }
         Post post = new Post();
         BeanUtils.copyProperties(postVo,post);
-        return ResultVo.success(postService.save(post));
+        try {
+            return ResultVo.success(postService.save(post));
+        } catch (RuntimeException e) {
+            return ResultVo.fail(e.getMessage());
+        }
     }
 
 
@@ -84,13 +88,13 @@ public class PostController {
         return ResultVo.success(voPage);
     }
 
-    @RequestMapping(value = "detail/{id}")
-    public ResultVo<PostVo> postDetail(@PathVariable Long id){
+    @RequestMapping(value = "detail/{type}/{id}")
+    public ResultVo<PostVo> postDetail(@PathVariable Integer type,@PathVariable Long id){
         log.info("帖子详情查询参数：{}",id);
         if(Objects.isNull(id)){
             return ResultVo.fail("查询失败");
         }
-        Post post = postService.findById(id);
+        Post post = postService.findById(type,id);
         if(post == null){
             return ResultVo.fail("帖子被删除或不存在");
         }

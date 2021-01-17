@@ -93,7 +93,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post findById(Long id) {
-        return repository.getPostByIdAndYn(id,Boolean.FALSE);
+    public Post findById(Integer type,Long id) {
+        User loginUser = LoginContext.getLoginUser();
+        Post post = repository.getPostByIdAndYn(id,Boolean.FALSE);
+        if(post!=null && !CommonConstant.EDIT_TYPE.equals(type)){
+            post.setReadNum(post.getReadNum() + CommonConstant.ONE);
+            repository.save(post);
+        }else if(post!=null){
+            if(CommonConstant.EDIT_TYPE.equals(type) && (Objects.isNull(loginUser) || !loginUser.getId().equals(post.getUserId()))){
+                return null;
+            }
+        }
+        return post;
     }
 }

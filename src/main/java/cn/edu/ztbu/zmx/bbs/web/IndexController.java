@@ -13,22 +13,30 @@ import java.util.Objects;
 
 @Controller
 public class IndexController {
-
+    /**
+     * 首页
+     */
     @RequestMapping(value = {"index","/"})
     public String index(){
         return "/index";
     }
-
+    /**
+     * 分类列表页
+     */
     @RequestMapping(value = "post/index")
     public String postIndex(){
         return "/post/index";
     }
-
+    /**
+     * 文章详情页
+     */
     @RequestMapping(value = "post/detail")
     public String postDetail(){
         return "/post/detail";
     }
-
+    /**
+     * 登录
+     */
     @RequestMapping(value = "login")
     public String login(){
         User user = LoginContext.getLoginUser();
@@ -37,17 +45,28 @@ public class IndexController {
         }
         return "/login";
     }
-
+    /**
+     * 注册
+     */
     @RequestMapping(value = "reg")
     public String reg(){
         return "/reg";
     }
-
+    /**
+     * 忘记密码
+     */
     @RequestMapping(value = "forget")
     public String forget(){
         return "forget";
     }
 
+    /**
+     * 用户主页
+     */
+    @RequestMapping(value = "user/home")
+    public String home(){
+        return "/user/home";
+    }
     @ResponseBody
     @RequestMapping(value = "loginInfo")
     public ResultVo loginInfo(){

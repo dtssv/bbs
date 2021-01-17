@@ -24,7 +24,7 @@ layui.define('fly', function(exports){
   form.on('submit(addPost)', function(data){
     var field = data.field;
     if(!field.categoryId){
-      layer.msg("请算着所属板块",{shift: 6});
+      layer.msg("请选择所属板块",{shift: 6});
       return false;
     }
     if(!field.title){

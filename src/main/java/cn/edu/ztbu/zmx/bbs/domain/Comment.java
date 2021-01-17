@@ -31,6 +31,9 @@ public class Comment {
     @Column(name = "comment_user_id")
     private Long commentUserId;
 
+    @Column(name = "comment_nick_name")
+    private String commentNickName;
+
     @Column(name = "comment_body")
     private String commentBody;
 

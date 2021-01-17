@@ -42,11 +42,11 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
         if(postId){
             postId = parseInt(postId);
             $.ajax({
-                url:'/post/detail/' + postId,
+                url:'/post/detail/1/' + postId,
                 type:'GET',
                 dataType:'json',
                 success:function (res) {
-                    if(res.code === 1){
+                    if(res.code === 1 && res.data){
                         var data = res.data;
                         $("#addCategory").val(data.categoryId);
                         $("#L_id").val(data.id);

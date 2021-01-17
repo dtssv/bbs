@@ -36,6 +36,6 @@ public interface PostService {
      * @param id
      * @return
      */
-    Post findById(Long id);
+    Post findById(Integer type,Long id);
 
 }

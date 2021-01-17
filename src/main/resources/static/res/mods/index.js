@@ -57,6 +57,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
             $("#headPhotoItem").attr("src","../../res/images/head/head_default.png");
           }
         }
+        $(".user-home-index").attr("href","/user/home?userId=");
       }else{
         $(".loginedItem").hide();
         $(".loginItem").show();
@@ -66,8 +67,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
 
   category();
   //首页文章
-
-
+  
   function category(){
     var categoryId = getUrlParam('categoryId');
     categoryId = parseInt(categoryId);
@@ -91,6 +91,10 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
         }
       }
     })
+  }
+  
+  function noticeList() {
+    
   }
   function getUrlParam(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
