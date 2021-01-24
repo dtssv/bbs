@@ -23,4 +23,4 @@ create table user
     admin         int         default 0                 null comment '管理员标识,1:管理员，0：普通用户'
 );
 
-INSERT INTO bbs.user (id, user_name, password, phone, email, nick_name, register_time, comment_num, post_num, creator, create_time, modifier, modify_time, status, yn, admin,sex,head_photo,city,sign) VALUES (1, 'root', '123456', '18812345678', 'admin@admin.com', '赵梦鑫', '2020-10-18 21:20:05', 0, 0, '', '2020-11-07 08:37:52', '', '2020-11-07 08:37:52', 1, 0, 0,1,'','河南','赵梦鑫的主页');
+INSERT INTO user (id, user_name, password, phone, email, nick_name, register_time, comment_num, post_num, creator, create_time, modifier, modify_time, status, yn, admin, head_photo, sex, city, sign) VALUES (1, 'root', '$2a$10$TKqxzoTW44y9zjDXXgVumeVi6VCrHRl/qM7vd9wsYtXi4crlmllxi', '18812345678', '1@1.com', 'zs', '2020-10-18 21:20:05', 0, 0, '', '2020-11-07 08:37:52', '', '2021-01-23 14:53:10', 1, 0, 1, '', 1, 'henan', 'lllllll');
