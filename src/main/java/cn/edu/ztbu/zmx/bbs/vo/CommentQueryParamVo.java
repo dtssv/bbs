@@ -12,4 +12,6 @@ import lombok.Data;
 public class CommentQueryParamVo extends BaseParamVo {
 
     private Long postId;
+
+    private Long userId;
 }

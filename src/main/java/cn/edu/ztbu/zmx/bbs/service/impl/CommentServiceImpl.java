@@ -9,6 +9,7 @@ import cn.edu.ztbu.zmx.bbs.repository.PostRepository;
 import cn.edu.ztbu.zmx.bbs.repository.UserRepository;
 import cn.edu.ztbu.zmx.bbs.service.CommentService;
 import cn.edu.ztbu.zmx.bbs.util.LoginContext;
+import cn.edu.ztbu.zmx.bbs.vo.CommentQueryParamVo;
 import cn.edu.ztbu.zmx.bbs.vo.CommentVo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -102,12 +103,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Page<CommentVo> pageByPostId(Long postId,Integer pageNum,Integer pageSize) {
+    public Page<CommentVo> pageByParam(CommentQueryParamVo queryParamVo) {
         Page<Comment> page =  repository.findAll((r,q,c)->{
             Path<Object> post = r.get("postId");
             List<Predicate> predicateList = Lists.newArrayList();
-            if(!Objects.isNull(postId)){
-                Predicate predicate = c.equal(post.as(Long.class),postId);
+            if(!Objects.isNull(queryParamVo.getPostId())){
+                Predicate predicate = c.equal(post.as(Long.class),queryParamVo.getPostId());
+                predicateList.add(predicate);
+            }
+            if(!Objects.isNull(queryParamVo.getUserId())){
+                Path<Object> userId = r.get("userId");
+                Predicate predicate = c.equal(userId.as(Long.class),queryParamVo.getUserId());
                 predicateList.add(predicate);
             }
             Path<Object> yn = r.get("yn");
@@ -115,23 +121,29 @@ public class CommentServiceImpl implements CommentService {
             predicateList.add(ynPredicate);
             Predicate[] pre = new Predicate[predicateList.size()];
             return q.where(predicateList.toArray(pre)).getRestriction();
-        }, PageRequest.of(pageNum,pageSize));
+        }, PageRequest.of(queryParamVo.getPageNum(),queryParamVo.getPageSize()));
         User user = LoginContext.getLoginUser();
         List<User> authors = userRepository.findAllById(Lists.transform(page.getContent(),Comment::getUserId));
         Map<Long,User> authorMap = Maps.uniqueIndex(authors,User::getId);
-        Post post = postRepository.getOne(postId);
+        Post post = null;
+        if(Objects.nonNull(queryParamVo.getPostId())){
+            postRepository.getOne(queryParamVo.getPostId());
+        }
+        List<Post> postList = postRepository.findAllById(Lists.transform(page.getContent(),Comment::getPostId));
+        Map<Long,Post> postMap = Maps.uniqueIndex(postList,Post::getId);
         List<CommentVo> voList = Lists.transform(page.getContent(),s->{
             CommentVo vo = new CommentVo();
             BeanUtils.copyProperties(s,vo);
             User author = authorMap.get(s.getUserId());
             vo.setHeadUrl(author.getHeadPhoto());
             vo.setSex(author.getSex());
+            vo.setPostTitle(postMap.get(s.getPostId()).getTitle());
             if(Objects.nonNull(user) && user.getId().equals(vo.getUserId())){
                 vo.setCanEdit(Boolean.TRUE);
             }else{
                 vo.setCanEdit(Boolean.FALSE);
             }
-            if(post.getUserId().equals(vo.getUserId())){
+            if(post != null && post.getUserId().equals(vo.getUserId())){
                 vo.setAuthor(Boolean.TRUE);
             }
             return vo;

@@ -1,6 +1,7 @@
 package cn.edu.ztbu.zmx.bbs.service;
 
 import cn.edu.ztbu.zmx.bbs.domain.Comment;
+import cn.edu.ztbu.zmx.bbs.vo.CommentQueryParamVo;
 import cn.edu.ztbu.zmx.bbs.vo.CommentVo;
 import org.springframework.data.domain.Page;
 
@@ -20,10 +21,10 @@ public interface CommentService {
 
     /**
      *
-     * @param postId
+     * @param queryParamVo
      * @return
      */
-    Page<CommentVo> pageByPostId(Long postId,Integer pageNum,Integer pageSize);
+    Page<CommentVo> pageByParam(CommentQueryParamVo queryParamVo);
 
     /**
      *

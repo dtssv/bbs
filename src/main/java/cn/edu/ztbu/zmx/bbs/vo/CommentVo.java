@@ -38,4 +38,6 @@ public class CommentVo {
     private Boolean canEdit;
 
     private Boolean author;
+
+    private String postTitle;
 }

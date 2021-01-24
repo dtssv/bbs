@@ -30,4 +30,5 @@ public interface PostRepository extends JpaRepository<Post,Long>, JpaSpecificati
      * @return
      */
     Post getPostByIdAndYn(Long id,Boolean yn);
+
 }

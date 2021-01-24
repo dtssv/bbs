@@ -26,6 +26,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
             dataType:'json',
             success:function (res) {
                 userPosts();
+                userComments();
                 if(res.code === 1 && res.data){
                     var data = res.data;
                     var headUrl;
@@ -94,9 +95,42 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                             '</li>';
                     }
                 }else{
-                    html += '<div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><i style="font-size:14px;">没有发表任何求解</i></div>';
+                    html += '<div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><i style="font-size:14px;">没有发表任何帖子</i></div>';
                 }
                 $("#userPosts").empty().html(html);
+            }
+        })
+    }
+
+    function userComments() {
+        var url = '/comment/pageComment?userId=' + detailId ;
+        $.ajax({
+            url:url,
+            type:'GET',
+            dataType:'json',
+            success:function (res) {
+                var html = "";
+                if(res.code === 1 && res.data && !res.data.empty){
+                    var data = res.data.content;
+                    for(var i in data){
+                        var item = data[i];
+                        var creamHtml = "";
+                        if(item.cream){
+                            creamHtml = '<span class="fly-jing">精</span>';
+                        }
+                        html += '<li>' +
+                            '          <p>' +
+                            '           <span>' + item.modifyTime + '</span>' +
+                            '           在<a href="/post/detail?postId=' + item.postId + '" target="_blank">' + item.postTitle + '</a>中回复：' +
+                            '          </p>' +
+                            '          <div class="home-dacontent">' + item.commentBody +
+                            '          </div>' +
+                            '</li>';
+                    }
+                }else{
+                    html += '<div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><span>没有发表任何回复</span></div>';
+                }
+                $("#userComments").empty().html(html);
             }
         })
     }

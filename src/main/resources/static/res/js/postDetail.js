@@ -74,7 +74,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
             commentData.replyId = commentId;
         }
         if(nickName) {
-            $("#L_content").val('').val('@' + nickName);
+            $("#L_content").val('').val('@' + nickName +  '：');
         }
         window.location.href='#comment';
     }
