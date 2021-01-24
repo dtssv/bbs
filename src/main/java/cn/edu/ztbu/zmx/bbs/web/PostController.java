@@ -10,22 +10,18 @@ import cn.edu.ztbu.zmx.bbs.util.LoginContext;
 import cn.edu.ztbu.zmx.bbs.vo.PostQueryParamVo;
 import cn.edu.ztbu.zmx.bbs.vo.PostVo;
 import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.connector.Request;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -73,7 +69,7 @@ public class PostController {
         if(Objects.isNull(queryParamVo.getPageSize())){
             queryParamVo.setPageSize(CommonConstant.DEFAULT_PAGE_SIZE);
         }
-        Page<Post> page = postService.findByCategory(queryParamVo.getCategoryId(),queryParamVo.getPageNum(),queryParamVo.getPageSize());
+        Page<Post> page = postService.findByParam(queryParamVo);
         List<User> authors = userService.selectByIds(Lists.transform(page.getContent(),Post::getUserId));
         Map<Long,User> authorMap = Maps.uniqueIndex(authors,User::getId);
         List<PostVo> voList = Lists.transform(page.getContent(),s->{

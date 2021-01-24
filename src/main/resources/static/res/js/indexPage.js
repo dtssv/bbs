@@ -53,8 +53,8 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                             '              <span>' + item.modifyTime + '</span>' +
                             '              <span class="fly-list-nums"> ' +
                             '                <i class="iconfont icon-pinglun1" title="回复"></i>' + item.commentNum +
-                            '              </span>\n' +
-                            '            </div>\n' +
+                            '              </span>' +
+                            '            </div>' +
                             '            <div class="fly-list-badge">';
                         if(item.cream){
                             html += '<span class="layui-badge layui-bg-red">精帖</span>';

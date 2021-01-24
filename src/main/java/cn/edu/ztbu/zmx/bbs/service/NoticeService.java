@@ -1,6 +1,7 @@
 package cn.edu.ztbu.zmx.bbs.service;
 
 import cn.edu.ztbu.zmx.bbs.domain.Notice;
+import cn.edu.ztbu.zmx.bbs.vo.NoticeQueryParamVo;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -20,11 +21,10 @@ public interface NoticeService {
 
     /**
      *
-     * @param pageNum
-     * @param pageSize
+     * @param queryParamVo
      * @return
      */
-    Page<Notice> pageAll(Integer pageNum,Integer pageSize);
+    Page<Notice> pageAll(NoticeQueryParamVo queryParamVo);
 
     /**
      *

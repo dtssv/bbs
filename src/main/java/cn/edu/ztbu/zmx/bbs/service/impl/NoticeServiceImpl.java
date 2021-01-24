@@ -3,6 +3,7 @@ package cn.edu.ztbu.zmx.bbs.service.impl;
 import cn.edu.ztbu.zmx.bbs.domain.Notice;
 import cn.edu.ztbu.zmx.bbs.repository.NoticeRepository;
 import cn.edu.ztbu.zmx.bbs.service.NoticeService;
+import cn.edu.ztbu.zmx.bbs.vo.NoticeQueryParamVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,8 +28,8 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public Page<Notice> pageAll(Integer pageNum, Integer pageSize) {
-        return repository.findAll(PageRequest.of(pageNum,pageSize));
+    public Page<Notice> pageAll(NoticeQueryParamVo queryParamVo) {
+        return repository.findAll(PageRequest.of(queryParamVo.getPageNum(),queryParamVo.getPageSize()));
     }
 
     @Override

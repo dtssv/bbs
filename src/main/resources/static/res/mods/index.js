@@ -66,6 +66,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
   });
 
   category();
+  noticeList();
   //首页文章
   
   function category(){
@@ -94,7 +95,34 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
   }
   
   function noticeList() {
-    
+    $.ajax({
+      url:'/notice/pageNotice',
+      type:'GET',
+      dataType:'json',
+      success:function (res) {
+        var html = '<dt class="fly-panel-title">公告</dt>';
+        if(res.code === 1){
+          if(res.code === 1 && !res.data.empty){
+            var data = res.data.content;
+            for(var i in data) {
+              var item = data[i];
+              html += "<dd>";
+              if(item.linkUrl){
+                html += '<a href="' + item.linkUrl + '">' + item.noticeBody + '</a>';
+              }else{
+                html += '<span>' + item.noticeBody + '</span>';
+              }
+              html += '</dd>';
+            }
+          }else{
+            html += '<div class="fly-none">没有相关数据</div>';
+          }
+        }else{
+          html += '<div class="fly-none">没有相关数据</div>';
+        }
+        $("#noticeDl").empty().html(html);
+      }
+    })
   }
   function getUrlParam(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象

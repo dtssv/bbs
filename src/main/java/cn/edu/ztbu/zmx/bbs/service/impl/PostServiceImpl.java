@@ -9,6 +9,7 @@ import cn.edu.ztbu.zmx.bbs.repository.PostRepository;
 import cn.edu.ztbu.zmx.bbs.repository.UserRepository;
 import cn.edu.ztbu.zmx.bbs.service.PostService;
 import cn.edu.ztbu.zmx.bbs.util.LoginContext;
+import cn.edu.ztbu.zmx.bbs.vo.PostQueryParamVo;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,13 +46,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<Post> findByCategory(Long categoryId, Integer pageNum, Integer pageSize) {
+    public Page<Post> findByParam(PostQueryParamVo paramVo) {
 
         return repository.findAll((r,q,c)->{
             Path<Object> category = r.get("categoryId");
             List<Predicate> predicateList = Lists.newArrayList();
-            if(!Objects.isNull(categoryId)){
-                Predicate predicate = c.equal(category.as(Long.class),categoryId);
+            if(!Objects.isNull(paramVo.getCategoryId())){
+                Predicate predicate = c.equal(category.as(Long.class),paramVo.getCategoryId());
+                predicateList.add(predicate);
+            }
+            if(!Objects.isNull(paramVo.getUserId())){
+                Path<Object> user = r.get("userId");
+                Predicate predicate = c.equal(user.as(Long.class),paramVo.getUserId());
                 predicateList.add(predicate);
             }
             Path<Object> yn = r.get("yn");
@@ -59,7 +65,7 @@ public class PostServiceImpl implements PostService {
             predicateList.add(ynPredicate);
             Predicate[] pre = new Predicate[predicateList.size()];
             return q.where(predicateList.toArray(pre)).getRestriction();
-        },PageRequest.of(pageNum,pageSize));
+        },PageRequest.of(paramVo.getPageNum(),paramVo.getPageSize()));
     }
 
     @Override

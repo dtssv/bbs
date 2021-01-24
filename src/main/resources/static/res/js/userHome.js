@@ -16,7 +16,6 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     }
 
     userDetail();
-
     function userDetail() {
         var userId = getUrlParam('userId');
         userId = parseInt(userId);
@@ -26,9 +25,11 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
             type:'GET',
             dataType:'json',
             success:function (res) {
+                userPosts();
                 if(res.code === 1 && res.data){
                     var data = res.data;
                     var headUrl;
+                    $(document).attr('title',data.nickName + '的主页');
                     if(data.headUrl){
                         headUrl=data.headUrl;
                     }else{
@@ -49,6 +50,9 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                     $("#userHeadUrl").attr("src",headUrl);
                     $("#userHeadUrl").attr("alt",data.nickName);
                     $("#userNickName").empty().html(data.nickName);
+                    if(data.email){
+                        $("#userMail").attr("href","mailto:" + data.email).show();
+                    }
                     if(data.admin === 1){
                         $("#userAdmin").show();
                     }else{
@@ -66,100 +70,33 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
         })
     }
 
-    replyClick =  function(commentId,nickName){
-        if(commentId){
-            commentData.replyId = commentId;
-        }
-        if(nickName) {
-            $("#L_content").val('').val('@' + nickName);
-        }
-        window.location.href='#comment';
-    }
-    function postComment(pageNum,pageSize) {
-        var url = '/comment/pageComment?postId=' + detailId ;
-        if(pageNum){
-            url += '&pageNum=' + pageNum;
-        }
-        if(pageSize){
-            url += '&pageSize=' + pageSize;
-        }
+    function userPosts() {
+        var url = '/post/pagePost?userId=' + detailId ;
         $.ajax({
             url:url,
             type:'GET',
             dataType:'json',
             success:function (res) {
                 var html = "";
-                var pageHtml = "";
                 if(res.code === 1 && res.data && !res.data.empty){
                     var data = res.data.content;
                     for(var i in data){
                         var item = data[i];
-                        var authorType = "";
-                        var editType = "";
-                        var headUrl = "";
-                        if(item.author){
-                            authorType = " <span>(楼主)</span>";
+                        var creamHtml = "";
+                        if(item.cream){
+                            creamHtml = '<span class="fly-jing">精</span>';
                         }
-                        if(item.canEdit){
-                            editType =
-                                '                            <span type="edit"><a href="javascript:void(0)" onclick="commentEdit(' + item.id + ')">编辑</a></span>' +
-                                '                            <span type="del"><a href="javascript:void(0)" onclick="commentDelete(' + item.id + ')">删除</a></span>';
-                        }
-                        if(item.headUrl){
-                            headUrl=item.headUrl;
-                        }else{
-                            if(item.sex && item.sex == 1){
-                                headUrl = "../../res/images/head/head_boy.png";
-                            }else if(item.sex && item.sex == 2){
-                                headUrl = "../../res/images/head/head_girl.png";
-                            }else{
-                                headUrl = "../../res/images/head/head_default.png";
-                            }
-                        }
-                        html += ' <li data-id="' + item.id + '" class="post-daan">' +
-                            '            <a name="item"></a>' +
-                            '            <div class="detail-about detail-about-reply">' +
-                            '              <a class="fly-avatar" style="top: 3px;" href="/user/home?userId=' + item.userId +
-                            '">              <img src="' + headUrl + '" alt=" ' + item.nickName + '">' +
-                            '              </a>' +
-                            '              <div class="fly-detail-user">' +
-                            '                <a href="/user/home?userId=' + item.userId + '" class="fly-link">' +
-                            '                  <cite>' + item.nickName + '</cite>' +
-                            '                </a>' + authorType +
-                            '              </div>' +
-                            '              <div class="detail-hits">' +
-                            '                <span>' + item.modifyTime + '</span>' +
-                            '              </div>' +
-                            '            </div>' +
-                            '            <div class="detail-body post-body photos">' +
-                            '              <p>' + item.commentBody + '</p>' +
-                            '            </div>' +
-                            '            <div class="post-reply">' +
-                            '              <span type="reply">\n' +
-                            '                <i class="iconfont icon-svgmoban53"></i>' +
-                            '                <a href="javascript:void(0)" onclick="replyClick(' + item.id + ',\'' + item.nickName + '\')">回复</a>' +
-                            '              </span>' +
-                            '              <div class="post-admin">' + editType +
-                            '              </div>' +
-                            '            </div>' +
-                            '          </li>';
-                    }
-                    if(res.data.first){
-                        pageHtml +='<span class="laypage-curr">1</span>';
-                    }else{
-                        pageHtml += '<a href="javascript:void(0)" onclick="pageComment(' + (res.data.number - 1) + ',10)" class="laypage-prev">上一页</a>';
-                        pageHtml += '<a href="javascript:void(0)" onclick="pageComment(0,10)" class="laypage-first" title="首页">首页</a>';
-                        pageHtml +='<span class="laypage-curr">' + (res.data.number + 1) + '</span>';
-                    }
-                    if(!res.data.last){
-                        pageHtml += '<a href="javascript:void(0)" onclick="pageComment(' + (res.data.totalPages - 1) + ',10)" class="laypage-last" title="尾页">尾页</a>';
-                        pageHtml += '<a href="javascript:void(0)" onclick="pageComment(' + (res.data.number + 1) + ',10)" class="laypage-next">下一页</a>';
+                        html += '<li>' +
+                                creamHtml +
+                                '<a href="/post/detail?postId=' + item.id + '" class="post-title">' + item.title + '</a>' +
+                                '<i>' + item.modifyTime + '</i>' +
+                                '<em class="layui-hide-xs">' + item.readNum + '阅/' + item.commentNum + '回复</em>' +
+                            '</li>';
                     }
                 }else{
-                    html += '<li class="fly-none">消灭零回复</li>';
+                    html += '<div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><i style="font-size:14px;">没有发表任何求解</i></div>';
                 }
-                $("#post").empty().html(html);
-                $("#commentPage").empty().html(pageHtml);
+                $("#userPosts").empty().html(html);
             }
         })
     }

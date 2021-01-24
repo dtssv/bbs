@@ -1,6 +1,7 @@
 package cn.edu.ztbu.zmx.bbs.service;
 
 import cn.edu.ztbu.zmx.bbs.domain.Post;
+import cn.edu.ztbu.zmx.bbs.vo.PostQueryParamVo;
 import org.springframework.data.domain.Page;
 
 /**
@@ -19,10 +20,10 @@ public interface PostService {
 
     /**
      *
-     * @param categoryId
+     * @param paramVo
      * @return
      */
-    Page<Post> findByCategory(Long categoryId,Integer pageNum,Integer pageSize);
+    Page<Post> findByParam(PostQueryParamVo paramVo);
 
     /**
      *

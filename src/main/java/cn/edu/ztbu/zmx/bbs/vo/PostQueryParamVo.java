@@ -12,4 +12,6 @@ import lombok.Data;
 public class PostQueryParamVo extends BaseParamVo {
 
     private Long categoryId;
+
+    private Long userId;
 }

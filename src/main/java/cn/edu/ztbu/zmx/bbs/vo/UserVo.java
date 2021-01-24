@@ -31,6 +31,7 @@ public class UserVo {
 
     private Integer sex;
 
+    private String email;
 
     private String city;
 
