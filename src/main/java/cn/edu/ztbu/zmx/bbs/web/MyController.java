@@ -1,5 +1,7 @@
 package cn.edu.ztbu.zmx.bbs.web;
 
+import cn.edu.ztbu.zmx.bbs.domain.User;
+import cn.edu.ztbu.zmx.bbs.util.LoginContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,7 +26,8 @@ public class MyController {
      */
     @RequestMapping(value = "home")
     public String home(){
-        return "/user/home";
+        User user = LoginContext.getLoginUser();
+        return "redirect:/user/home?userId=" + user.getId();
     }
     /**
      * 我的设置
