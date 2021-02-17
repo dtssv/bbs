@@ -76,7 +76,7 @@ public class PostController {
             PostVo vo = new PostVo();
             BeanUtils.copyProperties(s,vo);
             User author = authorMap.get(s.getUserId());
-            vo.setHeadUrl(author.getHeadPhoto());
+            vo.setHeadPhoto(author.getHeadPhoto());
             vo.setSex(author.getSex());
             return vo;
         });
@@ -99,12 +99,12 @@ public class PostController {
         User user = LoginContext.getLoginUser();
         if(Objects.nonNull(user) && user.getId().equals(post.getUserId())){
             postVo.setCanEdit(Boolean.TRUE);
-            postVo.setHeadUrl(user.getHeadPhoto());
+            postVo.setHeadPhoto(user.getHeadPhoto());
             postVo.setSex(user.getSex());
         }else{
             postVo.setCanEdit(Boolean.FALSE);
             User author = userService.getById(post.getUserId());
-            postVo.setHeadUrl(author.getHeadPhoto());
+            postVo.setHeadPhoto(author.getHeadPhoto());
             postVo.setSex(author.getSex());
         }
         return ResultVo.success(postVo);

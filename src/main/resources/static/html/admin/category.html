@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>管理后台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="郑州工商学院论坛">
+    <meta name="description" content="郑州工商学院论坛">
+    <link rel="stylesheet" href="../../res/layui/css/layui.css">
+    <link rel="stylesheet" href="../../res/css/global.css">
+</head>
+<body style="margin-top: 65px;">
+<div class="fly-header layui-bg-black">
+    <div class="layui-container">
+        <a class="fly-logo" href="/">
+            <img src="../../res/images/logo.png" alt="layui">
+        </a>
+
+        <ul class="layui-nav fly-nav-user">
+      <span class="loginItem">
+      <li class="layui-nav-item">
+        <a class="iconfont icon-touxiang layui-hide-xs" href="/login"></a>
+      </li>
+      <li class="layui-nav-item">
+        <a href="/login">登入</a>
+      </li>
+      <li class="layui-nav-item">
+        <a href="/reg">注册</a>
+      </li>
+      </span>
+            <span class="loginedItem">
+        <li class="layui-nav-item">
+          <a class="fly-nav-avatar" href="javascript:;">
+            <cite class="layui-hide-xs" id="username-cite"></cite>
+            <img id="headPhotoItem" src="">
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="/my/home"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe770;</i>我的主页</a></dd>
+          <dd><a href="/my/set"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+          <dd><a href="/admin/index" class="adminIndex"><i class="layui-icon">&#xe68e;</i>管理后台</a></dd>
+            <hr style="margin: 5px 0;">
+            <dd><a href="/logout" style="text-align: center;">退出</a></dd>
+          </dl>
+        </li>
+      </span>
+        </ul>
+    </div>
+</div>
+<div class="fly-panel fly-column">
+    <div class="layui-container">
+
+        <div class="fly-column-right layui-hide-xs">
+            <div class="layui-col-md6" style="margin-top:6px;">
+                <label for="searchName" class="layui-form-label">板块名称</label>
+                <div class="layui-input-block">
+                    <input type="text" id="searchName" name="searchName" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <a class="layui-btn" onclick="page(0,10)">搜索</a>
+            <a class="layui-btn" onclick="editForm()">新增板块</a>
+        </div>
+    </div>
+</div>
+<div class="layui-container fly-marginTop fly-user-main">
+    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+        <li class="layui-nav-item  layui-this">
+            <a href="/admin/category">
+                <i class="layui-icon">&#xe60f;</i>
+                板块管理
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="/admin/user">
+                <i class="layui-icon">&#xe770;</i>
+                用户管理
+            </a>
+        </li>
+        <li class="layui-nav-item ">
+            <a href="/admin/post">
+                <i class="layui-icon">&#xe60a;</i>
+                帖子管理
+            </a>
+        </li>
+        <li class="layui-nav-item ">
+            <a href="/admin/comment">
+                <i class="layui-icon">&#xe611;</i>
+                回复管理
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="/admin/notice">
+                <i class="layui-icon">&#xe702;</i>
+                公告管理
+            </a>
+        </li>
+    </ul>
+
+    <div class="fly-panel fly-panel-user">
+        <table class="layui-table layui-text">
+            <colgroup>
+                <col width="150">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>板块名称</th>
+                <th>创建时间</th>
+                <th>帖子数量</th>
+                <th>版主数量</th>
+                <th>顺序</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="dataList">
+            </tbody>
+        </table>
+
+        <!-- <div class="fly-none">没有相关数据</div> -->
+
+        <div style="text-align: center">
+            <div class="laypage-main" id="dataPage"></div>
+        </div>
+
+    </div>
+</div>
+<div class="fly-footer">
+    <p><a href="http://www.ztbu.edu.cn/" target="_blank">郑州工商学院</a> 2021 &copy; <a href="#" >赵梦鑫</a></p>
+</div>
+
+<script src="../../res/layui/layui.js"></script>
+<script src="../../res/js/adminCategory.js"></script>
+<script>
+
+    layui.config({
+        version: "3.0.0"
+        ,base: '../../res/mods/'
+    }).extend({
+        fly: 'index'
+    }).use('fly');
+</script>
+
+</body>
+
+<div class="layui-hide" id="editDiv">
+    <form class="layui-form">
+        <input type="hidden" id="itemId">
+        <div class="layui-form-item" style="margin-top:6px;">
+            <label for="categoryName" class="layui-form-label">板块名称</label>
+            <div class="layui-input-inline">
+                <input type="text" id="categoryName" name="categoryName" required  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:6px;">
+            <label for="orderNum" class="layui-form-label">顺序</label>
+            <div class="layui-input-inline">
+                <input type="text" id="orderNum" name="orderNum" required autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </form>
+</div>
+</html>

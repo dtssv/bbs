@@ -2,18 +2,28 @@ package cn.edu.ztbu.zmx.bbs.service.impl;
 
 import cn.edu.ztbu.zmx.bbs.common.CommonConstant;
 import cn.edu.ztbu.zmx.bbs.domain.User;
+import cn.edu.ztbu.zmx.bbs.repository.CommentRepository;
+import cn.edu.ztbu.zmx.bbs.repository.PostRepository;
 import cn.edu.ztbu.zmx.bbs.repository.UserRepository;
 import cn.edu.ztbu.zmx.bbs.service.UserService;
 import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserRegisterVo;
+import cn.edu.ztbu.zmx.bbs.vo.UserVo;
+import com.google.common.collect.Lists;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @program bbs.UserServiceImpl
@@ -26,6 +36,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Override
     public ResultVo register(UserRegisterVo userRegisterVo) {
@@ -46,7 +62,7 @@ public class UserServiceImpl implements UserService {
         user.setCommentNum(CommonConstant.ZERO);
         user.setPostNum(CommonConstant.ZERO);
         user.setSex(CommonConstant.SEX_DEFAULT);
-        user.setHeadPhoto(CommonConstant.SexEnum.fromCode(user.getSex()).getHeadUrl());
+        user.setHeadPhoto(CommonConstant.SexEnum.fromCode(user.getSex()).getHeadPhoto());
         user.setCity("");
         user.setSign("");
         userRepository.save(user);
@@ -55,11 +71,79 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Long id) {
-        return userRepository.getOne(id);
+        Optional<User> user = userRepository.findOne((r, q, c)->c.and(c.equal(r.get("id"),id),
+                c.equal(r.get("yn"),0)));
+        return user.isPresent() ? user.get() : null;
     }
 
     @Override
     public List<User> selectByIds(List<Long> ids) {
-        return userRepository.findAllById(ids);
+        if(CollectionUtils.isEmpty(ids)){
+            return Lists.newArrayList();
+        }
+        return userRepository.findAll((r, q, c)->c.and(c.in(r.get("id").in(ids)),
+                c.equal(r.get("yn"),0)));
+    }
+
+    @Override
+    public User saveBasic(UserVo userVo) {
+        User user = this.getById(userVo.getId());
+        user.setEmail(userVo.getEmail());
+        user.setNickName(userVo.getNickName());
+        user.setSex(userVo.getSex());
+        user.setCity(userVo.getCity());
+        user.setSign(userVo.getSign());
+        user.setModifyTime(LocalDateTime.now());
+        user.setModifier(userVo.getUserName());
+        postRepository.updateByUserId(user.getId(),user.getNickName());
+        commentRepository.updateNickNameByUserId(user.getId(),user.getNickName());
+        commentRepository.updateCommentNickNameByUserId(user.getId(),user.getNickName());
+        return userRepository.save(user);
+    }
+
+    @Override
+    public ResultVo<User> changePassword(String nowPass, String newPass, Long id, String userName) {
+        User user = this.getById(id);
+        if(nowPass.equals(user.getPassword()) || new BCryptPasswordEncoder().encode(nowPass).equals(user.getPassword())){
+            if(new BCryptPasswordEncoder().encode(newPass).equals(user.getPassword())){
+                return ResultVo.fail("新密码不能和当前密码相同");
+            }
+            user.setPassword(new BCryptPasswordEncoder().encode(newPass));
+            user.setModifier(userName);
+            user.setModifyTime(LocalDateTime.now());
+            return ResultVo.success(userRepository.save(user));
+        }else {
+            return ResultVo.fail("密码错误");
+        }
+    }
+
+    @Override
+    public User changeHeadImage(String headImage, Long id, String userName) {
+        User user = this.getById(id);
+        user.setHeadPhoto(headImage);
+        user.setModifyTime(LocalDateTime.now());
+        user.setModifier(userName);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public Long todayData() {
+        return userRepository.count((r,q,c)->{
+            Path<Object> createTime = r.get("createTime");
+            List<Predicate> predicateList = Lists.newArrayList();
+            Predicate predicate = c.between(createTime.as(LocalDateTime.class),LocalDateTime.of(LocalDate.now(), LocalTime.of(00,00,00))
+                    ,LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59)));
+            predicateList.add(predicate);
+            Path<Object> yn = r.get("yn");
+            Predicate ynPredicate = c.equal(yn.as(Boolean.class),Boolean.FALSE);
+            predicateList.add(ynPredicate);
+            Predicate[] pre = new Predicate[predicateList.size()];
+            return q.where(predicateList.toArray(pre)).getRestriction();
+        });
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }

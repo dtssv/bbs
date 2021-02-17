@@ -28,19 +28,19 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                     var data = res.data.content;
                     for(var i in data){
                         var item = data[i];
-                        var headUrl = item.headUrl;
-                        if(!headUrl){
+                        var headPhoto = item.headPhoto;
+                        if(!headPhoto){
                             if(item.sex && item.sex == 1){
-                                headUrl= "../../res/images/head/head_boy.png";
+                                headPhoto= "../../res/images/head/head_boy.png";
                             }else if(item.sex && item.sex == 2){
-                                headUrl= "../../res/images/head/head_girl.png";
+                                headPhoto= "../../res/images/head/head_girl.png";
                             }else{
-                                headUrl= "../../res/images/head/head_default.png";
+                                headPhoto= "../../res/images/head/head_default.png";
                             }
                         }
                         html += '        <li>' +
                             '            <a href="/user/home?userId=' + item.userId + '" class="fly-avatar">' +
-                            '              <img src="' + headUrl + '" alt="' + item.nickName + '">' +
+                            '              <img src="' + headPhoto + '" alt="' + item.nickName + '">' +
                             '            </a>' +
                             '            <h2>' +
                             '              <a class="layui-badge">' + item.categoryName + '</a>' +

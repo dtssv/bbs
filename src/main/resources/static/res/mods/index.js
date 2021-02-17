@@ -58,6 +58,11 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
           }
         }
         $(".user-home-index").attr("href","/user/home?userId=" + res.data.id);
+        if(res.data.admin == 1){
+          $('.adminIndex').show();
+        }else{
+          $('.adminIndex').hide();
+        }
       }else{
         $(".loginedItem").hide();
         $(".loginItem").show();
@@ -369,32 +374,6 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     
     //新消息通知
     ,newmsg: function(){
-      var elemUser = $('.fly-nav-user');
-      if(layui.cache.user.uid !== -1 && elemUser[0]){
-        fly.json('/message/nums/', {
-          _: new Date().getTime()
-        }, function(res){
-          if(res.status === 0 && res.count > 0){
-            var msg = $('<a class="fly-nav-msg" href="javascript:;">'+ res.count +'</a>');
-            elemUser.append(msg);
-            msg.on('click', function(){
-              fly.json('/message/read', {}, function(res){
-                if(res.status === 0){
-                  location.href = '/privatemessage/';
-                }
-              });
-            });
-            layer.tips('你有 '+ res.count +' 条未读消息', msg, {
-              tips: 3
-              ,tipsMore: true
-              ,fixed: true
-            });
-            msg.on('mouseenter', function(){
-              layer.closeAll('tips');
-            })
-          }
-        });
-      }
       return arguments.callee;
     }
     

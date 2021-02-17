@@ -29,27 +29,27 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                 userComments();
                 if(res.code === 1 && res.data){
                     var data = res.data;
-                    var headUrl;
+                    var headPhoto;
                     $(document).attr('title',data.nickName + '的主页');
-                    if(data.headUrl){
-                        headUrl=data.headUrl;
+                    if(data.headPhoto){
+                        headPhoto=data.headPhoto;
                     }else{
                         if(data.sex && data.sex == 1){
-                            headUrl = "../../res/images/head/head_boy.png";
+                            headPhoto = "../../res/images/head/head_boy.png";
                             $("#userSexMan").show();
                             $("#userSexWoman").hide();
                         }else if(data.sex && data.sex == 2){
-                            headUrl = "../../res/images/head/head_girl.png";
+                            headPhoto = "../../res/images/head/head_girl.png";
                             $("#userSexMan").hide();
                             $("#userSexWoman").show();
                         }else{
-                            headUrl = "../../res/images/head/head_default.png";
+                            headPhoto = "../../res/images/head/head_default.png";
                             $("#userSexMan").hide();
                             $("#userSexWoman").hide();
                         }
                     }
-                    $("#userHeadUrl").attr("src",headUrl);
-                    $("#userHeadUrl").attr("alt",data.nickName);
+                    $("#userHeadPhoto").attr("src",headPhoto);
+                    $("#userHeadPhoto").attr("alt",data.nickName);
                     $("#userNickName").empty().html(data.nickName);
                     if(data.email){
                         $("#userMail").attr("href","mailto:" + data.email).show();

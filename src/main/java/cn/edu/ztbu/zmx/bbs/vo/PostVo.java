@@ -33,7 +33,7 @@ public class PostVo {
 
     private Boolean canEdit;
 
-    private String headUrl;
+    private String headPhoto;
 
     private Integer sex;
 

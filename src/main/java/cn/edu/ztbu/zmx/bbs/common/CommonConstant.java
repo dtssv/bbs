@@ -120,12 +120,12 @@ public interface CommonConstant {
 
         private String desc;
 
-        private String headUrl;
+        private String headPhoto;
 
-        SexEnum(Integer code,String desc,String headUrl){
+        SexEnum(Integer code,String desc,String headPhoto){
             this.code = code;
             this.desc = desc;
-            this.headUrl = headUrl;
+            this.headPhoto = headPhoto;
         }
 
         public Integer getCode() {
@@ -136,8 +136,8 @@ public interface CommonConstant {
             return desc;
         }
 
-        public String getHeadUrl() {
-            return headUrl;
+        public String getHeadPhoto() {
+            return headPhoto;
         }
 
         public static SexEnum fromCode(Integer code){

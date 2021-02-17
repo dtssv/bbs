@@ -3,6 +3,7 @@ package cn.edu.ztbu.zmx.bbs.service;
 import cn.edu.ztbu.zmx.bbs.domain.User;
 import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserRegisterVo;
+import cn.edu.ztbu.zmx.bbs.vo.UserVo;
 
 import java.util.List;
 
@@ -35,4 +36,43 @@ public interface UserService {
      * @return
      */
     List<User> selectByIds(List<Long> ids);
+
+    /**
+     *
+     * @param userVo
+     * @return
+     */
+    User saveBasic(UserVo userVo);
+
+    /**
+     *
+     * @param nowPass
+     * @param newPass
+     * @param id
+     * @param userName
+     * @return
+     */
+    ResultVo<User> changePassword(String nowPass,String newPass,Long id,String userName);
+
+    /**
+     *
+     * @param headImage
+     * @param id
+     * @param userName
+     * @return
+     */
+    User changeHeadImage(String headImage,Long id,String userName);
+
+    /**
+     *
+     * @return
+     */
+    Long todayData();
+
+    /**
+     *
+     * @param user
+     * @return
+     */
+    User save(User user);
 }

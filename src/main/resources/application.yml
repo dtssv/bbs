@@ -14,7 +14,7 @@ spring:
       connection-test-query: select 1
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bbs?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/bbs?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true
     username: root
     password: 123456
   redis:
@@ -31,4 +31,6 @@ spring:
       hibernate:
         format_sql: true
   resources:
-    static-locations: classpath:/static/
+    static-locations: classpath:/static/,file:${image.upload}
+image:
+  upload: F:/workspace/bbs/headImage

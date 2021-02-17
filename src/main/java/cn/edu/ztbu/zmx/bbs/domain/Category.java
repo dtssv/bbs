@@ -33,7 +33,7 @@ public class Category {
     private LocalDateTime lastPostTime;
 
     @Column(name = "moderator_num")
-    private String moderatorNum;
+    private Integer moderatorNum;
 
     @Column(name = "creator")
     private String creator;

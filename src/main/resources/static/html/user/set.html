@@ -40,8 +40,9 @@
           <img id="headPhotoItem" src="">
         </a>
         <dl class="layui-nav-child">
-          <dd><a href="/my/home"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+          <dd><a href="/my/home"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe770;</i>我的主页</a></dd>
           <dd><a href="/my/set"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+          <dd><a href="/admin/index" class="adminIndex"><i class="layui-icon">&#xe68e;</i>管理后台</a></dd>
           <hr style="margin: 5px 0;">
           <dd><a href="/logout" style="text-align: center;">退出</a></dd>
         </dl>
@@ -55,7 +56,7 @@
   <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
     <li class="layui-nav-item">
       <a href="/my/home">
-        <i class="layui-icon">&#xe609;</i>
+        <i class="layui-icon">&#xe770;</i>
         我的主页
       </a>
     </li>
@@ -63,6 +64,12 @@
       <a href="/my/set">
         <i class="layui-icon">&#xe620;</i>
         基本设置
+      </a>
+    </li>
+    <li class="layui-nav-item adminIndex">
+      <a href="/admin/index">
+        <i class="layui-icon">&#xe68e;</i>
+        管理后台
       </a>
     </li>
   </ul>
@@ -84,7 +91,6 @@
         <li class="layui-this" lay-id="info">我的资料</li>
         <li lay-id="avatar">头像</li>
         <li lay-id="pass">密码</li>
-        <li lay-id="bind">帐号绑定</li>
       </ul>
       <div class="layui-tab-content" style="padding: 20px 0;">
         <div class="layui-form layui-form-pane layui-tab-item layui-show">
@@ -96,14 +102,14 @@
               </div>
             </div>
             <div class="layui-form-item">
-              <label for="L_username" class="layui-form-label">昵称</label>
+              <label for="L_nickName" class="layui-form-label">昵称</label>
               <div class="layui-input-inline">
-                <input type="text" id="L_username" name="nickname" required lay-verify="required" autocomplete="off" value="" class="layui-input">
+                <input type="text" id="L_nickName" name="nickName" required lay-verify="required" autocomplete="off" value="" class="layui-input">
               </div>
               <div class="layui-inline">
                 <div class="layui-input-inline">
-                  <input type="radio" name="sex" value="0" checked title="男">
-                  <input type="radio" name="sex" value="1" title="女">
+                  <input type="radio" name="sex" id="L_sexMan" value="1" title="男">
+                  <input type="radio" name="sex" value="2" id="L_sexWoman" title="女">
                 </div>
               </div>
             </div>
@@ -120,7 +126,7 @@
               </div>
             </div>
             <div class="layui-form-item">
-              <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit>确认修改</button>
+              <button class="layui-btn" key="set-mine" lay-filter="userBasic" lay-submit>确认修改</button>
             </div>
           </form>
           </div>
@@ -132,14 +138,14 @@
                 <button type="button" class="layui-btn upload-img">
                   <i class="layui-icon">&#xe67c;</i>上传头像
                 </button>
-                <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+                <img id="L_headPhoto" >
                 <span class="loading"></span>
               </div>
             </div>
           </div>
           
           <div class="layui-form layui-form-pane layui-tab-item">
-            <form action="/privaterepass" method="post">
+            <form action="" method="post">
               <div class="layui-form-item">
                 <label for="L_nowpass" class="layui-form-label">当前密码</label>
                 <div class="layui-input-inline">
@@ -160,7 +166,7 @@
                 </div>
               </div>
               <div class="layui-form-item">
-                <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit>确认修改</button>
+                <button class="layui-btn" key="set-mine" lay-filter="changePass" lay-submit>确认修改</button>
               </div>
             </form>
           </div>
@@ -175,15 +181,9 @@
   <p><a href="http://www.ztbu.edu.cn/" target="_blank">郑州工商学院</a> 2021 &copy; <a href="#" >赵梦鑫</a></p>
 </div>
 <script src="../../res/layui/layui.js"></script>
+<script src="../../res/js/useSet.js"></script>
 <script>
-layui.cache.page = 'user';
-layui.cache.user = {
-  username: '游客'
-  ,uid: -1
-  ,avatar: '../../res/images/avatar/00.jpg'
-  ,experience: 83
-  ,sex: '男'
-};
+
 layui.config({
   version: "2.0.0"
   ,base: '../../res/mods/'

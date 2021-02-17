@@ -8,6 +8,7 @@ import cn.edu.ztbu.zmx.bbs.repository.CommentRepository;
 import cn.edu.ztbu.zmx.bbs.repository.PostRepository;
 import cn.edu.ztbu.zmx.bbs.repository.UserRepository;
 import cn.edu.ztbu.zmx.bbs.service.CommentService;
+import cn.edu.ztbu.zmx.bbs.service.UserService;
 import cn.edu.ztbu.zmx.bbs.util.LoginContext;
 import cn.edu.ztbu.zmx.bbs.vo.CommentQueryParamVo;
 import cn.edu.ztbu.zmx.bbs.vo.CommentVo;
@@ -45,14 +46,14 @@ public class CommentServiceImpl implements CommentService {
     private PostRepository postRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Override
     public Comment save(CommentVo vo) {
         User user = LoginContext.getLoginUser();
         Comment comment = new Comment();
         if (Objects.isNull(vo.getId())) {
-            Post post = postRepository.getOne(vo.getPostId());
+            Post post = postRepository.getPostByIdAndYn(vo.getPostId(),Boolean.FALSE);
             if (Objects.isNull(post)) {
                 throw new RuntimeException("回复的帖子不存在");
             }
@@ -71,15 +72,15 @@ public class CommentServiceImpl implements CommentService {
             comment.setModifier(comment.getCreator());
             comment.setYn(CommonConstant.YnEnum.N.getFlag());
             if(Objects.nonNull(comment.getCommentUserId())){
-                User commentUser = userRepository.getOne(comment.getCommentUserId());
+                User commentUser = userService.getById(comment.getCommentUserId());
                 if(Objects.nonNull(commentUser)){
-                    comment.setCommentBody(commentUser.getNickName());
+                    comment.setCommentNickName(commentUser.getNickName());
                 }else{
                     comment.setCommentUserId(null);
                 }
             }
             if(Objects.nonNull(vo.getReplyId())) {
-                Comment reply = repository.getOne(vo.getReplyId());
+                Comment reply = repository.getCommentByIdAndYn(vo.getReplyId(),Boolean.FALSE);
                 if(Objects.nonNull(reply)){
                     comment.setCommentUserId(reply.getUserId());
                     comment.setCommentNickName(reply.getNickName());
@@ -89,9 +90,9 @@ public class CommentServiceImpl implements CommentService {
             post.setLastCommentTime(LocalDateTime.now());
             postRepository.save(post);
             user.setCommentNum(user.getCommentNum() + CommonConstant.ONE);
-            userRepository.save(user);
+            userService.save(user);
         }else{
-            comment = repository.getOne(vo.getId());
+            comment = repository.getCommentByIdAndYn(vo.getId(),Boolean.FALSE);
             if(!user.getId().equals(comment.getUserId())){
                 throw new RuntimeException("只能编辑自己的回帖");
             }
@@ -123,11 +124,11 @@ public class CommentServiceImpl implements CommentService {
             return q.where(predicateList.toArray(pre)).getRestriction();
         }, PageRequest.of(queryParamVo.getPageNum(),queryParamVo.getPageSize()));
         User user = LoginContext.getLoginUser();
-        List<User> authors = userRepository.findAllById(Lists.transform(page.getContent(),Comment::getUserId));
+        List<User> authors = userService.selectByIds(Lists.transform(page.getContent(),Comment::getUserId));
         Map<Long,User> authorMap = Maps.uniqueIndex(authors,User::getId);
         Post post = null;
         if(Objects.nonNull(queryParamVo.getPostId())){
-            postRepository.getOne(queryParamVo.getPostId());
+            postRepository.getPostByIdAndYn(queryParamVo.getPostId(),Boolean.FALSE);
         }
         List<Post> postList = postRepository.findAllById(Lists.transform(page.getContent(),Comment::getPostId));
         Map<Long,Post> postMap = Maps.uniqueIndex(postList,Post::getId);
@@ -135,7 +136,7 @@ public class CommentServiceImpl implements CommentService {
             CommentVo vo = new CommentVo();
             BeanUtils.copyProperties(s,vo);
             User author = authorMap.get(s.getUserId());
-            vo.setHeadUrl(author.getHeadPhoto());
+            vo.setHeadPhoto(author.getHeadPhoto());
             vo.setSex(author.getSex());
             vo.setPostTitle(postMap.get(s.getPostId()).getTitle());
             if(Objects.nonNull(user) && user.getId().equals(vo.getUserId())){

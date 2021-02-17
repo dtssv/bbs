@@ -39,4 +39,10 @@ public interface PostService {
      */
     Post findById(Integer type,Long id);
 
+    /**
+     *
+     * @return
+     */
+    Long todayData();
+
 }

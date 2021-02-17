@@ -18,7 +18,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -74,9 +77,9 @@ public class PostServiceImpl implements PostService {
         if(loginUser == null){
             throw new RuntimeException("登录用户为空");
         }
-        Category category = categoryRepository.getOne(post.getCategoryId());
+        Category category = categoryRepository.getByIdAndYn(post.getCategoryId(),Boolean.FALSE);
         if(post.getId() != null){
-            Post postDb = repository.getOne(post.getId());
+            Post postDb = repository.getPostByIdAndYn(post.getId(),Boolean.FALSE);
             if(!postDb.getUserId().equals(loginUser.getId())){
                 throw new RuntimeException("只能修改自己的帖子");
             }
@@ -120,5 +123,21 @@ public class PostServiceImpl implements PostService {
             }
         }
         return post;
+    }
+
+    @Override
+    public Long todayData() {
+        return repository.count((r,q,c)->{
+            Path<Object> createTime = r.get("createTime");
+            List<Predicate> predicateList = Lists.newArrayList();
+            Predicate predicate = c.between(createTime.as(LocalDateTime.class),LocalDateTime.of(LocalDate.now(), LocalTime.of(00,00,00))
+                    ,LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59)));
+            predicateList.add(predicate);
+            Path<Object> yn = r.get("yn");
+            Predicate ynPredicate = c.equal(yn.as(Boolean.class),Boolean.FALSE);
+            predicateList.add(ynPredicate);
+            Predicate[] pre = new Predicate[predicateList.size()];
+            return q.where(predicateList.toArray(pre)).getRestriction();
+        });
     }
 }

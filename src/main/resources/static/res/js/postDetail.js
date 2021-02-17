@@ -36,17 +36,17 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                     $("#postTitle").empty().html(data.title);
                     $("#postComment").empty().html(data.commentNum);
                     $("#postRead").empty().html(data.readNum);
-                    $("#postHeadUrl").attr("alt",data.nickName);
+                    $("#postHeadPhoto").attr("alt",data.nickName);
                     $("#postCreateDate").html(data.modifyTime);
-                    if(data.headUrl){
-                        $("#postHeadUrl").attr("src",data.headUrl);
+                    if(data.headPhoto){
+                        $("#postHeadPhoto").attr("src",data.headPhoto);
                     }else{
                         if(data.sex && data.sex == 1){
-                            $("#postHeadUrl").attr("src","../../res/images/head/head_boy.png");
+                            $("#postHeadPhoto").attr("src","../../res/images/head/head_boy.png");
                         }else if(data.sex && data.sex == 2){
-                            $("#postHeadUrl").attr("src","../../res/images/head/head_girl.png");
+                            $("#postHeadPhoto").attr("src","../../res/images/head/head_girl.png");
                         }else{
-                            $("#postHeadUrl").attr("src","../../res/images/head/head_default.png");
+                            $("#postHeadPhoto").attr("src","../../res/images/head/head_default.png");
                         }
                     }
                     if(data.cream){
@@ -99,7 +99,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                         var item = data[i];
                         var authorType = "";
                         var editType = "";
-                        var headUrl = "";
+                        var headPhoto = "";
                         if(item.author){
                             authorType = " <span>(楼主)</span>";
                         }
@@ -108,22 +108,22 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                                 '                            <span type="edit"><a href="javascript:void(0)" onclick="commentEdit(' + item.id + ')">编辑</a></span>' +
                                 '                            <span type="del"><a href="javascript:void(0)" onclick="commentDelete(' + item.id + ')">删除</a></span>';
                         }
-                        if(item.headUrl){
-                            headUrl=item.headUrl;
+                        if(item.headPhoto){
+                            headPhoto=item.headPhoto;
                         }else{
                             if(item.sex && item.sex == 1){
-                                headUrl = "../../res/images/head/head_boy.png";
+                                headPhoto = "../../res/images/head/head_boy.png";
                             }else if(item.sex && item.sex == 2){
-                                headUrl = "../../res/images/head/head_girl.png";
+                                headPhoto = "../../res/images/head/head_girl.png";
                             }else{
-                                headUrl = "../../res/images/head/head_default.png";
+                                headPhoto = "../../res/images/head/head_default.png";
                             }
                         }
                         html += ' <li data-id="' + item.id + '" class="post-daan">' +
                             '            <a name="item"></a>' +
                             '            <div class="detail-about detail-about-reply">' +
                             '              <a class="fly-avatar" style="top: 3px;" href="/user/home?userId=' + item.userId +
-                            '">                <img src="' + headUrl + '" alt=" ' + item.nickName + '">' +
+                            '">                <img src="' + headPhoto + '" alt=" ' + item.nickName + '">' +
                             '              </a>' +
                             '              <div class="fly-detail-user">' +
                             '                <a href="/user/home?userId=' + item.userId + '" class="fly-link">' +

@@ -31,7 +31,7 @@ public class CommentVo {
 
     private LocalDateTime modifyTime;
 
-    private String headUrl;
+    private String headPhoto;
 
     private Integer sex;
 
