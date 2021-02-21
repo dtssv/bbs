@@ -2,8 +2,10 @@ package cn.edu.ztbu.zmx.bbs.service;
 
 import cn.edu.ztbu.zmx.bbs.domain.User;
 import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
+import cn.edu.ztbu.zmx.bbs.vo.UserQueryParamVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserRegisterVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserVo;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -75,4 +77,11 @@ public interface UserService {
      * @return
      */
     User save(User user);
+
+    /**
+     *
+     * @param queryParamVo
+     * @return
+     */
+    Page<User> findByParam(UserQueryParamVo queryParamVo);
 }

@@ -15,7 +15,7 @@ public class UserVo {
 
     private Long id;
 
-    private String userName;
+    private String username;
 
     private String nickName;
 
@@ -36,4 +36,6 @@ public class UserVo {
     private String city;
 
     private String sign;
+
+    private LocalDateTime registerTime;
 }

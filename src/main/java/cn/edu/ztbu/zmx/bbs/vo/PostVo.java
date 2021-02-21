@@ -38,5 +38,8 @@ public class PostVo {
     private Integer sex;
 
     private Long userId;
+
     private LocalDateTime modifyTime;
+
+    private LocalDateTime createTime;
 }

@@ -44,5 +44,16 @@ public interface PostService {
      * @return
      */
     Long todayData();
+    /**
+     *
+     */
+    String delete(Long id);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    String cream(Long id);
 
 }

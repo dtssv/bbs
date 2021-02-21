@@ -83,7 +83,7 @@ public class MyController {
         User user = LoginContext.getLoginUser();
         if(user != null){
             userVo.setId(user.getId());
-            userVo.setUserName(user.getUsername());
+            userVo.setUsername(user.getUsername());
             user = userService.saveBasic(userVo);
             reLogin(user);
             return ResultVo.success("");

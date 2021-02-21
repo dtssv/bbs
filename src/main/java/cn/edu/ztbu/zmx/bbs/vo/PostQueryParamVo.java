@@ -14,4 +14,10 @@ public class PostQueryParamVo extends BaseParamVo {
     private Long categoryId;
 
     private Long userId;
+
+    private String categoryName;
+
+    private String nickName;
+
+    private String title;
 }

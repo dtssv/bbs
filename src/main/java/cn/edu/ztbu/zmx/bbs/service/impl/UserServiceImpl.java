@@ -7,22 +7,27 @@ import cn.edu.ztbu.zmx.bbs.repository.PostRepository;
 import cn.edu.ztbu.zmx.bbs.repository.UserRepository;
 import cn.edu.ztbu.zmx.bbs.service.UserService;
 import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
+import cn.edu.ztbu.zmx.bbs.vo.UserQueryParamVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserRegisterVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserVo;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.DigestUtils;
 
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -81,8 +86,16 @@ public class UserServiceImpl implements UserService {
         if(CollectionUtils.isEmpty(ids)){
             return Lists.newArrayList();
         }
-        return userRepository.findAll((r, q, c)->c.and(c.in(r.get("id").in(ids)),
-                c.equal(r.get("yn"),0)));
+        return userRepository.findAll((r, q, c)->{
+            List<Predicate> predicateList = Lists.newArrayList();
+            Expression<Long> inId = r.<Long>get("id");
+            predicateList.add(inId.in(ids));
+            Path<Object> yn = r.get("yn");
+            Predicate ynPredicate = c.equal(yn.as(Boolean.class),Boolean.FALSE);
+            predicateList.add(ynPredicate);
+            Predicate[] pre = new Predicate[predicateList.size()];
+            return q.where(predicateList.toArray(pre)).getRestriction();
+        });
     }
 
     @Override
@@ -94,7 +107,7 @@ public class UserServiceImpl implements UserService {
         user.setCity(userVo.getCity());
         user.setSign(userVo.getSign());
         user.setModifyTime(LocalDateTime.now());
-        user.setModifier(userVo.getUserName());
+        user.setModifier(userVo.getUsername());
         postRepository.updateByUserId(user.getId(),user.getNickName());
         commentRepository.updateNickNameByUserId(user.getId(),user.getNickName());
         commentRepository.updateCommentNickNameByUserId(user.getId(),user.getNickName());
@@ -145,5 +158,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public Page<User> findByParam(UserQueryParamVo queryParamVo) {
+        return userRepository.findAll((r,q,c)->{
+            List<Predicate> predicateList = Lists.newArrayList();
+            Path<Object> nickName = r.get("nickName");
+            if(!Strings.isNullOrEmpty(queryParamVo.getNickName())){
+                Predicate predicate = c.like(nickName.as(String.class),queryParamVo.getNickName());
+                predicateList.add(predicate);
+            }
+            Path<Object> yn = r.get("yn");
+            Predicate ynPredicate = c.equal(yn.as(Boolean.class),Boolean.FALSE);
+            predicateList.add(ynPredicate);
+            Predicate[] pre = new Predicate[predicateList.size()];
+            return q.where(predicateList.toArray(pre)).getRestriction();
+        }, PageRequest.of(queryParamVo.getPageNum(),queryParamVo.getPageSize()));
     }
 }

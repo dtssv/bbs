@@ -52,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
             List<Predicate> predicateList = Lists.newArrayList();
             if(!Strings.isNullOrEmpty(vo.getCategoryName())){
                 Path<Object> categoryName = r.get("categoryName");
-                Predicate categoryNamePredicate = c.equal(categoryName.as(String.class),Boolean.FALSE);
+                Predicate categoryNamePredicate = c.like(categoryName.as(String.class),vo.getCategoryName());
                 predicateList.add(categoryNamePredicate);
             }
             Path<Object> yn = r.get("yn");

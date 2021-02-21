@@ -2,12 +2,12 @@ package cn.edu.ztbu.zmx.bbs.web;
 
 import cn.edu.ztbu.zmx.bbs.common.CommonConstant;
 import cn.edu.ztbu.zmx.bbs.domain.Category;
+import cn.edu.ztbu.zmx.bbs.domain.Post;
+import cn.edu.ztbu.zmx.bbs.domain.User;
 import cn.edu.ztbu.zmx.bbs.service.*;
 import cn.edu.ztbu.zmx.bbs.util.JacksonUtil;
 import cn.edu.ztbu.zmx.bbs.util.LoginContext;
-import cn.edu.ztbu.zmx.bbs.vo.CategoryQueryParamVo;
-import cn.edu.ztbu.zmx.bbs.vo.CategoryVo;
-import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
+import cn.edu.ztbu.zmx.bbs.vo.*;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -134,5 +134,68 @@ public class AdminController {
             return ResultVo.fail("板块已被删除或不存在");
         }
         return ResultVo.success("");
+    }
+
+    @ResponseBody
+    @RequestMapping("pagePost")
+    public ResultVo<Page<PostVo>> pagePost(PostQueryParamVo queryParamVo){
+        log.info("帖子查询参数：{}", JacksonUtil.toJsonString(queryParamVo));
+        if(Objects.isNull(queryParamVo.getPageNum())){
+            queryParamVo.setPageNum(CommonConstant.ZERO);
+        }
+        if(Objects.isNull(queryParamVo.getPageSize())){
+            queryParamVo.setPageSize(CommonConstant.DEFAULT_PAGE_SIZE);
+        }
+        Page<Post> page = postService.findByParam(queryParamVo);
+        List<PostVo> voList = Lists.transform(page.getContent(),s->{
+            PostVo vo = new PostVo();
+            BeanUtils.copyProperties(s,vo);
+            return vo;
+        });
+        return ResultVo.success(new PageImpl<>(voList,page.getPageable(),page.getTotalElements()));
+    }
+
+    @ResponseBody
+    @RequestMapping("deletePost")
+    public ResultVo deletePost(Long id){
+        if(Objects.isNull(id)){
+            return ResultVo.fail("请选择要删除的帖子");
+        }
+        String result = postService.delete(id);
+        if(Strings.isNullOrEmpty(result)){
+            return ResultVo.success("");
+        }
+        return ResultVo.fail(result);
+    }
+    @ResponseBody
+    @RequestMapping("creamPost")
+    public ResultVo creamPost(Long id){
+        if(Objects.isNull(id)){
+            return ResultVo.fail("请选择要加精的帖子");
+        }
+        String result = postService.cream(id);
+        if(Strings.isNullOrEmpty(result)){
+            return ResultVo.success("");
+        }
+        return ResultVo.fail(result);
+    }
+
+    @ResponseBody
+    @RequestMapping("pageUser")
+    public ResultVo<Page<UserVo>> pageUser(UserQueryParamVo queryParamVo){
+        log.info("用户查询参数：{}", JacksonUtil.toJsonString(queryParamVo));
+        if(Objects.isNull(queryParamVo.getPageNum())){
+            queryParamVo.setPageNum(CommonConstant.ZERO);
+        }
+        if(Objects.isNull(queryParamVo.getPageSize())){
+            queryParamVo.setPageSize(CommonConstant.DEFAULT_PAGE_SIZE);
+        }
+        Page<User> page = userService.findByParam(queryParamVo);
+        List<UserVo> voList = Lists.transform(page.getContent(),s->{
+            UserVo vo = new UserVo();
+            BeanUtils.copyProperties(s,vo);
+            return vo;
+        });
+        return ResultVo.success(new PageImpl<>(voList,page.getPageable(),page.getTotalElements()));
     }
 }

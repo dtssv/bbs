@@ -10,6 +10,7 @@ import cn.edu.ztbu.zmx.bbs.repository.UserRepository;
 import cn.edu.ztbu.zmx.bbs.service.PostService;
 import cn.edu.ztbu.zmx.bbs.util.LoginContext;
 import cn.edu.ztbu.zmx.bbs.vo.PostQueryParamVo;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,12 +51,26 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<Post> findByParam(PostQueryParamVo paramVo) {
-
         return repository.findAll((r,q,c)->{
             Path<Object> category = r.get("categoryId");
             List<Predicate> predicateList = Lists.newArrayList();
             if(!Objects.isNull(paramVo.getCategoryId())){
                 Predicate predicate = c.equal(category.as(Long.class),paramVo.getCategoryId());
+                predicateList.add(predicate);
+            }
+            Path<Object> categoryName = r.get("categoryName");
+            if(!Strings.isNullOrEmpty(paramVo.getCategoryName())){
+                Predicate predicate = c.like(categoryName.as(String.class),paramVo.getCategoryName());
+                predicateList.add(predicate);
+            }
+            Path<Object> nickName = r.get("nickName");
+            if(!Strings.isNullOrEmpty(paramVo.getNickName())){
+                Predicate predicate = c.like(nickName.as(String.class),paramVo.getNickName());
+                predicateList.add(predicate);
+            }
+            Path<Object> title = r.get("title");
+            if(!Strings.isNullOrEmpty(paramVo.getTitle())){
+                Predicate predicate = c.like(title.as(String.class),paramVo.getTitle());
                 predicateList.add(predicate);
             }
             if(!Objects.isNull(paramVo.getUserId())){
@@ -139,5 +154,32 @@ public class PostServiceImpl implements PostService {
             Predicate[] pre = new Predicate[predicateList.size()];
             return q.where(predicateList.toArray(pre)).getRestriction();
         });
+    }
+
+
+    @Override
+    public String delete(Long id) {
+        Post post = repository.getPostByIdAndYn(id,Boolean.FALSE);
+        if(Objects.isNull(post) || post.getYn()){
+            return "帖子不存在";
+        }
+        post.setYn(Boolean.TRUE);
+        post.setModifyTime(LocalDateTime.now());
+        post.setModifier(LoginContext.getLoginUser().getUsername());
+        repository.save(post);
+        return "";
+    }
+
+    @Override
+    public String cream(Long id) {
+        Post post = repository.getPostByIdAndYn(id,Boolean.FALSE);
+        if(Objects.isNull(post) || post.getYn()){
+            return "帖子不存在";
+        }
+        post.setCream(Boolean.TRUE);
+        post.setModifyTime(LocalDateTime.now());
+        post.setModifier(LoginContext.getLoginUser().getUsername());
+        repository.save(post);
+        return "";
     }
 }
