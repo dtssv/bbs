@@ -43,7 +43,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                         }else{
                             sex == '未知';
                         }
-                        var operatorHtml = '<a class="layui-btn layui-btn-xs" onclick="setModerator(' + item.id + ')">设为版主</a>';
+                        var operatorHtml = '';
                         if(item.status == 1){
                             operatorHtml += '<a class="layui-btn layui-btn-xs" onclick="changeStatus(' + item.id + ',-1)">禁用</a>';
                             operatorHtml += '<a class="layui-btn layui-btn-xs" onclick="changeStatus(' + item.id + ',0)">禁止登录</a>';
