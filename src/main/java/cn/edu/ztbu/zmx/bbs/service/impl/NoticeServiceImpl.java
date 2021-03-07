@@ -82,7 +82,13 @@ public class NoticeServiceImpl implements NoticeService {
             notice.setStatus(CommonConstant.ZERO);
         }
         notice.setNoticeBody(vo.getNoticeBody());
-        notice.setLinkUrl(vo.getLinkUrl());
+        String linkUrl = vo.getLinkUrl();
+        if(!Strings.isNullOrEmpty(linkUrl)){
+            if(!linkUrl.startsWith("http://") || !linkUrl.startsWith("://")){
+                linkUrl = "http://" + linkUrl;
+            }
+        }
+        notice.setLinkUrl(linkUrl);
         notice.setStartTime(LocalDateTime.ofInstant(DateUtil.parse(vo.getStartTime()).toInstant(),ZoneId.systemDefault()));
         notice.setEndTime(LocalDateTime.ofInstant(DateUtil.parse(vo.getEndTime()).toInstant(),ZoneId.systemDefault()));
         notice.setModifier(user.getUsername());
