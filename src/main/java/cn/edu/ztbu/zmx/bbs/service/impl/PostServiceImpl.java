@@ -163,10 +163,16 @@ public class PostServiceImpl implements PostService {
         if(Objects.isNull(post) || post.getYn()){
             return "帖子不存在";
         }
+        User loginUser = LoginContext.getLoginUser();
         post.setYn(Boolean.TRUE);
         post.setModifyTime(LocalDateTime.now());
-        post.setModifier(LoginContext.getLoginUser().getUsername());
+        post.setModifier(loginUser.getUsername());
         repository.save(post);
+        Category category = categoryRepository.getByIdAndYn(post.getCategoryId(),Boolean.FALSE);
+        category.setPostNum(category.getPostNum() - CommonConstant.ONE);
+        categoryRepository.save(category);
+        loginUser.setPostNum(loginUser.getPostNum()  + CommonConstant.ONE);
+        userRepository.save(loginUser);
         return "";
     }
 

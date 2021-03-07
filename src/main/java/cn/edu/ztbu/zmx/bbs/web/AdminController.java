@@ -1,10 +1,9 @@
 package cn.edu.ztbu.zmx.bbs.web;
 
 import cn.edu.ztbu.zmx.bbs.common.CommonConstant;
-import cn.edu.ztbu.zmx.bbs.domain.Category;
-import cn.edu.ztbu.zmx.bbs.domain.Post;
-import cn.edu.ztbu.zmx.bbs.domain.User;
+import cn.edu.ztbu.zmx.bbs.domain.*;
 import cn.edu.ztbu.zmx.bbs.service.*;
+import cn.edu.ztbu.zmx.bbs.util.DateUtil;
 import cn.edu.ztbu.zmx.bbs.util.JacksonUtil;
 import cn.edu.ztbu.zmx.bbs.util.LoginContext;
 import cn.edu.ztbu.zmx.bbs.vo.*;
@@ -198,4 +197,106 @@ public class AdminController {
         });
         return ResultVo.success(new PageImpl<>(voList,page.getPageable(),page.getTotalElements()));
     }
+
+    @ResponseBody
+    @RequestMapping("changeStatus")
+    public ResultVo changeStatus(Long id,Integer status){
+        if(Objects.isNull(id)){
+            return ResultVo.fail("请选择要操作的用户");
+        }
+        userService.changeStatus(id,status);
+        return ResultVo.success("");
+    }
+
+    @ResponseBody
+    @RequestMapping("setModerator")
+    public ResultVo setModerator(Long id,Long categoryId){
+        Integer result = userService.setModerator(id,categoryId);
+        if(result == 0){
+            return  ResultVo.fail("操作失败");
+        }
+        return ResultVo.success("");
+    }
+
+    @ResponseBody
+    @RequestMapping("pageComment")
+    public ResultVo<Page<CommentVo>> pageComment(CommentQueryParamVo queryParamVo){
+        log.info("帖子查询参数：{}", JacksonUtil.toJsonString(queryParamVo));
+        if(Objects.isNull(queryParamVo.getPageNum())){
+            queryParamVo.setPageNum(CommonConstant.ZERO);
+        }
+        if(Objects.isNull(queryParamVo.getPageSize())){
+            queryParamVo.setPageSize(CommonConstant.DEFAULT_PAGE_SIZE);
+        }
+        Page<CommentVo> page = commentService.pageByParam(queryParamVo);
+        return ResultVo.success(page);
+    }
+
+    @ResponseBody
+    @RequestMapping("deleteComment")
+    public ResultVo deleteComment(Long id){
+        if(Objects.isNull(id)){
+            return ResultVo.fail("请选择要删除的帖子");
+        }
+        log.info("回复删除参数：{}",id);
+        try {
+            return ResultVo.success(commentService.delete(id));
+        } catch (RuntimeException e) {
+            return ResultVo.fail(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("pageNotice")
+    public ResultVo<Page<NoticeVo>> pageNotice(NoticeQueryParamVo queryParamVo){
+        log.info("板块查询参数：{}", JacksonUtil.toJsonString(queryParamVo));
+        if(Objects.isNull(queryParamVo.getPageNum())){
+            queryParamVo.setPageNum(CommonConstant.ZERO);
+        }
+        if(Objects.isNull(queryParamVo.getPageSize())){
+            queryParamVo.setPageSize(CommonConstant.DEFAULT_PAGE_SIZE);
+        }
+        Page<Notice> page = noticeService.pageAll(queryParamVo);
+        List<NoticeVo> voList = Lists.transform(page.getContent(),s->{
+            NoticeVo vo = new NoticeVo();
+            vo.setId(s.getId());
+            vo.setCreateTime(s.getCreateTime());
+            vo.setCreator(s.getCreator());
+            vo.setEndTime(DateUtil.format(s.getEndTime()));
+            vo.setStartTime(DateUtil.format(s.getStartTime()));
+            vo.setLinkUrl(s.getLinkUrl());
+            vo.setModifyTime(s.getModifyTime());
+            vo.setNoticeBody(s.getNoticeBody());
+            return vo;
+        });
+        return ResultVo.success(new PageImpl<>(voList,page.getPageable(),page.getTotalElements()));
+    }
+
+    @ResponseBody
+    @RequestMapping("deleteNotice")
+    public ResultVo deleteNotice(Long id){
+        if(Objects.isNull(id)){
+            return ResultVo.fail("请选择要删除的板块");
+        }
+        try {
+            return ResultVo.success(noticeService.delete(id));
+        } catch (RuntimeException e) {
+            return ResultVo.fail(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("saveNotice")
+    public ResultVo saveNotice(NoticeVo vo){
+        if(Objects.isNull(vo) || Strings.isNullOrEmpty(vo.getNoticeBody())){
+            return ResultVo.fail("参数非法");
+        }
+        Notice notice = noticeService.save(vo);
+        if(Objects.isNull(notice)){
+            return ResultVo.fail("板块已被删除或不存在");
+        }
+        return ResultVo.success("");
+    }
+
+
 }

@@ -47,6 +47,14 @@
         </ul>
     </div>
 </div>
+<div class="fly-panel fly-column">
+    <div class="layui-container">
+
+        <div class="fly-column-right layui-hide-xs">
+            <a class="layui-btn" onclick="editForm()">新增公告</a>
+        </div>
+    </div>
+</div>
 <div class="layui-container fly-marginTop fly-user-main">
     <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
         <li class="layui-nav-item">
@@ -81,9 +89,33 @@
         </li>
     </ul>
 
+
     <div class="fly-panel fly-panel-user">
-        <p style="font-size: 30px;padding-top: 50px;padding-left: 50px">亲爱的管理员，今天新注册用户<a href="/admin/user" id="todayUser" style="color: blue">10</a>人，
-            今日新增帖子<a href="/admin/post" id="todayPost" style="color: blue">10</a>个。</p>
+        <table class="layui-table layui-text">
+            <colgroup>
+                <col width="150">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th style="width: 150px;">公告内容</th>
+                <th style="width: 200px;">跳转地址</th>
+                <th>发布人</th>
+                <th>发布时间</th>
+                <th>公告时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="dataList">
+            </tbody>
+        </table>
+
+        <!-- <div class="fly-none">没有相关数据</div> -->
+
+        <div style="text-align: center">
+            <div class="laypage-main" id="dataPage"></div>
+        </div>
+
     </div>
 </div>
 <div class="fly-footer">
@@ -91,7 +123,7 @@
 </div>
 
 <script src="../../res/layui/layui.js"></script>
-<script src="../../res/js/adminIndex.js"></script>
+<script src="../../res/js/adminNotice.js"></script>
 <script>
 
     layui.config({
@@ -103,4 +135,32 @@
 </script>
 
 </body>
+
+<div class="layui-hide" id="editDiv">
+    <form class="layui-form">
+        <input type="hidden" id="itemId">
+        <div class="layui-form-item" style="margin-top:6px;">
+            <label for="noticeBody" class="layui-form-label">公告内容</label>
+            <div class="layui-input-inline">
+                <textarea type="text" id="noticeBody" style="height:100px;width: 500px" name="noticeBody" required  autocomplete="off" class="layui-input"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:6px;">
+            <label for="linkUrl" class="layui-form-label">跳转地址</label>
+            <div class="layui-input-inline">
+                <input type="text" id="linkUrl" style="width: 500px" name="linkUrl" required autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:6px;">
+            <label  class="layui-form-label">公告时间</label>
+            <div class="layui-input-inline">
+                <input type="text" id="startTime" name="startTime" required autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid">~</div>
+            <div class="layui-input-inline">
+                <input type="text" id="endTime" name="endTime" required autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </form>
+</div>
 </html>

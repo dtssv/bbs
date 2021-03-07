@@ -2,6 +2,7 @@ package cn.edu.ztbu.zmx.bbs.service;
 
 import cn.edu.ztbu.zmx.bbs.domain.Notice;
 import cn.edu.ztbu.zmx.bbs.vo.NoticeQueryParamVo;
+import cn.edu.ztbu.zmx.bbs.vo.NoticeVo;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -31,5 +32,12 @@ public interface NoticeService {
      * @param notice
      * @return
      */
-    Notice save(Notice notice);
+    Notice save(NoticeVo notice);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    Integer delete(Long id);
 }

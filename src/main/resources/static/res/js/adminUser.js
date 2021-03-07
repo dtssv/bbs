@@ -43,8 +43,15 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                         }else{
                             sex == '未知';
                         }
-                        if(item.cream == 1){
-                            operatorHtml = '<a class="layui-btn layui-btn-xs" onclick="cream(' + item.id + ')">加精</a>';
+                        var operatorHtml = '<a class="layui-btn layui-btn-xs" onclick="setModerator(' + item.id + ')">设为版主</a>';
+                        if(item.status == 1){
+                            operatorHtml += '<a class="layui-btn layui-btn-xs" onclick="changeStatus(' + item.id + ',-1)">禁用</a>';
+                            operatorHtml += '<a class="layui-btn layui-btn-xs" onclick="changeStatus(' + item.id + ',0)">禁止登录</a>';
+                        }else  if(item.status == -1){
+                            operatorHtml += '<a class="layui-btn layui-btn-xs" onclick="changeStatus(' + item.id + ',1)">启用</a>';
+                            operatorHtml += '<a class="layui-btn layui-btn-xs" onclick="changeStatus(' + item.id + ',0)">禁止登录</a>';
+                        }else{
+                            operatorHtml += '<a class="layui-btn layui-btn-xs" onclick="changeStatus(' + item.id + ',1)">允许登录</a>';
                         }
                         html += '      <tr>' +
                             '           <td><a href="/user/home?userId=' + item.id + '">' + item.nickName + '</a></td>' +
@@ -55,8 +62,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                             '           <td>' + item.registerTime + '</td>' +
                             '           <td>' + item.postNum + '</td>' +
                             '           <td>' + item.commentNum + '</td>' +
-                            '           <td>' +
-                            '               <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="deleteItem(' + item.id + ')">删除</a>' +
+                            '           <td>' + operatorHtml +
                             '           </td>' +
                             '          </tr>';
                     }
@@ -73,7 +79,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                     }
                 }else{
                     html = '      <tr>' +
-                        '           <td colspan="7" style="text-align: center">暂无数据</td>' +
+                        '           <td colspan="9" style="text-align: center">暂无数据</td>' +
                         '        </tr>';
                 }
                 $('#dataList').empty().html(html);
@@ -85,33 +91,71 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     page =function (pageNum,pageSize) {
         loadPage(pageNum,pageSize)
     }
-    
-    deleteItem = function (id) {
-        layer.confirm('确定要删除么', function(index){
-            $.ajax({
-                url:'/admin/deletePost',
-                type:'POST',
-                data:{id:id},
-                success:function (res) {
-                    if(res.code == 1){
-                        layer.msg('删除成功',function () {
-                            loadPage(0,10);
-                        });
-                    }else{
-                        layer.msg(res.msg,{shift:6})
+
+    setModerator = function (id) {
+        $.ajax({
+            url:'/category/findAll',
+            type:'POST',
+            success:function (res) {
+                if(res.code === 1){
+                    var data = res.data;
+                    var html = '<option value="0">请选择</option>';
+                    for(var i in data){
+                        var item = data[i];
+                        html += "<option value='" + item.id + "'>" + item.categoryName + "</option>";
                     }
+                    $("#category").empty().html(html);
+                    form.render("select");
+                    $('#operatorDiv').removeClass('layui-hide');
+                    layer.open({
+                        type: 1,
+                        content: $('#operatorDiv'),
+                        area:['390px', '360px'],
+                        btn:['确认','取消'],
+                        title:'设为版主',
+                        yes:function () {
+                            var categoryId = $('#category').val();
+                            if(!categoryId){
+                                layer.msg('请选择板块',{shift:6})
+                                return false;
+                            }
+                            $.ajax({
+                                url:'/admin/setModerator',
+                                type:'POST',
+                                data:{id:id,categoryId:categoryId},
+                                success:function (res) {
+                                    if(res.code == 1){
+                                        layer.msg('成功',function () {
+                                            layer.closeAll();
+                                            $('#editDiv').addClass('layui-hide');
+                                            loadPage(0,10);
+                                        });
+                                    }else{
+                                        layer.msg(res.msg,{shift:6})
+                                    }
+                                }
+                            });
+                        },
+                        btn2:function () {
+                            layer.closeAll();
+                            $('#operatorDiv').addClass('layui-hide');
+                        },
+                        cancel:function () {
+                            layer.closeAll();
+                            $('#operatorDiv').addClass('layui-hide');
+                        }
+                    });
                 }
-            });
-            layer.close(index);
-        });
+            }
+        })
     }
 
-    cream = function (id) {
-        layer.confirm('确定要加精么', function(index){
+    changeStatus = function (id,status) {
+        layer.confirm('确定要这样做么', function(index){
             $.ajax({
-                url:'/admin/creamPost',
+                url:'/admin/changeStatus',
                 type:'POST',
-                data:{id:id},
+                data:{id:id,status:status},
                 success:function (res) {
                     if(res.code == 1){
                         layer.msg('操作成功',function () {

@@ -38,4 +38,6 @@ public class UserVo {
     private String sign;
 
     private LocalDateTime registerTime;
+
+    private Integer status;
 }

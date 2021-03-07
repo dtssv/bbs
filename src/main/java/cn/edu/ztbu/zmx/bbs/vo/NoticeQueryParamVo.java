@@ -2,6 +2,8 @@ package cn.edu.ztbu.zmx.bbs.vo;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * @program bbs.NoticeQueryParamVo
  * @author: zhaomengxin
@@ -10,4 +12,8 @@ import lombok.Data;
  */
 @Data
 public class NoticeQueryParamVo extends BaseParamVo {
+
+    private LocalDateTime now;
+
+    private Long id;
 }

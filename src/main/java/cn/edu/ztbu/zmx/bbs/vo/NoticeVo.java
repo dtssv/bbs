@@ -1,6 +1,8 @@
 package cn.edu.ztbu.zmx.bbs.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -20,4 +22,10 @@ public class NoticeVo {
     private LocalDateTime modifyTime;
 
     private String linkUrl;
+
+    private String startTime;
+    private String endTime;
+    private LocalDateTime createTime;
+    private String creator;
+
 }

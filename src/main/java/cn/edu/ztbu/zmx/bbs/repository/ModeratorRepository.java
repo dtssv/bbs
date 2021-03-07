@@ -13,4 +13,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ModeratorRepository extends JpaRepository<Moderator,Long>, JpaSpecificationExecutor<Moderator> {
+
+    Moderator getByUserIdAndYn(Long userId,Boolean yn);
 }

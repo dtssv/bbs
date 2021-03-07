@@ -40,4 +40,6 @@ public class CommentVo {
     private Boolean author;
 
     private String postTitle;
+
+    private LocalDateTime createTime;
 }

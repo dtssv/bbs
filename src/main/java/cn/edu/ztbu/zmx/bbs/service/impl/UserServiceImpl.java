@@ -1,11 +1,12 @@
 package cn.edu.ztbu.zmx.bbs.service.impl;
 
 import cn.edu.ztbu.zmx.bbs.common.CommonConstant;
+import cn.edu.ztbu.zmx.bbs.domain.Category;
+import cn.edu.ztbu.zmx.bbs.domain.Moderator;
 import cn.edu.ztbu.zmx.bbs.domain.User;
-import cn.edu.ztbu.zmx.bbs.repository.CommentRepository;
-import cn.edu.ztbu.zmx.bbs.repository.PostRepository;
-import cn.edu.ztbu.zmx.bbs.repository.UserRepository;
+import cn.edu.ztbu.zmx.bbs.repository.*;
 import cn.edu.ztbu.zmx.bbs.service.UserService;
+import cn.edu.ztbu.zmx.bbs.util.LoginContext;
 import cn.edu.ztbu.zmx.bbs.vo.ResultVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserQueryParamVo;
 import cn.edu.ztbu.zmx.bbs.vo.UserRegisterVo;
@@ -47,6 +48,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ModeratorRepository moderatorRepository;
 
     @Override
     public ResultVo register(UserRegisterVo userRegisterVo) {
@@ -175,5 +182,58 @@ public class UserServiceImpl implements UserService {
             Predicate[] pre = new Predicate[predicateList.size()];
             return q.where(predicateList.toArray(pre)).getRestriction();
         }, PageRequest.of(queryParamVo.getPageNum(),queryParamVo.getPageSize()));
+    }
+
+    @Override
+    public User changeStatus(Long id, Integer status) {
+        User user = this.getById(id);
+        if(user.getAdmin().equals(1)){
+            return null;
+        }
+        user.setModifyTime(LocalDateTime.now());
+        user.setModifier(LoginContext.getLoginUser().getUsername());
+        user.setStatus(status);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public Integer setModerator(Long id, Long categoryId) {
+        Moderator moderator = moderatorRepository.getByUserIdAndYn(id,Boolean.FALSE);
+        User loginUser = LoginContext.getLoginUser();
+        if(Objects.isNull(categoryId) || categoryId.equals(0L)){
+            if(Objects.nonNull(moderator)){
+                moderator.setYn(CommonConstant.YnEnum.Y.getFlag());
+                moderator.setModifier(loginUser.getUsername());
+                moderator.setModifyTime(LocalDateTime.now());
+                moderatorRepository.save(moderator);
+                return 1;
+            }
+            return 0;
+        }
+        Category category = categoryRepository.getByIdAndYn(categoryId,Boolean.FALSE);
+        if(Objects.isNull(category)){
+            return CommonConstant.ZERO;
+        }
+        User user = this.getById(id);
+        if(Objects.isNull(user)){
+            return CommonConstant.ZERO;
+        }
+        if(Objects.isNull(moderator)){
+            moderator = new Moderator();
+            moderator.setCategoryId(id);
+            moderator.setCategoryName(category.getCategoryName());
+            moderator.setCreator(loginUser.getUsername());
+            moderator.setCreateTime(LocalDateTime.now());
+            moderator.setYn(CommonConstant.YnEnum.N.getFlag());
+            moderator.setNickName(user.getNickName());
+            moderator.setStatus(CommonConstant.YES);
+        }else{
+            moderator.setCategoryId(categoryId);
+            moderator.setCategoryName(category.getCategoryName());
+        }
+        moderator.setModifier(loginUser.getUsername());
+        moderator.setModifyTime(LocalDateTime.now());
+        moderatorRepository.save(moderator);
+        return 1;
     }
 }

@@ -12,6 +12,7 @@ import cn.edu.ztbu.zmx.bbs.service.UserService;
 import cn.edu.ztbu.zmx.bbs.util.LoginContext;
 import cn.edu.ztbu.zmx.bbs.vo.CommentQueryParamVo;
 import cn.edu.ztbu.zmx.bbs.vo.CommentVo;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -117,6 +118,11 @@ public class CommentServiceImpl implements CommentService {
                 Predicate predicate = c.equal(userId.as(Long.class),queryParamVo.getUserId());
                 predicateList.add(predicate);
             }
+            if(!Strings.isNullOrEmpty(queryParamVo.getNickName())){
+                Path<Object> nickName = r.get("userId");
+                Predicate predicate = c.equal(nickName.as(String.class),queryParamVo.getNickName());
+                predicateList.add(predicate);
+            }
             Path<Object> yn = r.get("yn");
             Predicate ynPredicate = c.equal(yn.as(Boolean.class),Boolean.FALSE);
             predicateList.add(ynPredicate);
@@ -165,6 +171,11 @@ public class CommentServiceImpl implements CommentService {
         }
         comment.setYn(CommonConstant.YnEnum.Y.getFlag());
         repository.save(comment);
+        Post post = postRepository.getPostByIdAndYn(id,Boolean.FALSE);
+        post.setCommentNum(post.getCommentNum() - CommonConstant.ONE);
+        postRepository.save(post);
+        loginUser.setCommentNum(loginUser.getCommentNum() - CommonConstant.ONE);
+        userService.save(loginUser);
         return CommonConstant.ONE;
     }
 

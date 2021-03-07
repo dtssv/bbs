@@ -3,6 +3,7 @@ package cn.edu.ztbu.zmx.bbs.web;
 import cn.edu.ztbu.zmx.bbs.common.CommonConstant;
 import cn.edu.ztbu.zmx.bbs.domain.Notice;
 import cn.edu.ztbu.zmx.bbs.service.NoticeService;
+import cn.edu.ztbu.zmx.bbs.util.DateUtil;
 import cn.edu.ztbu.zmx.bbs.util.JacksonUtil;
 import cn.edu.ztbu.zmx.bbs.vo.NoticeQueryParamVo;
 import cn.edu.ztbu.zmx.bbs.vo.NoticeVo;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,10 +45,18 @@ public class NoticeController {
         if(Objects.isNull(queryParamVo.getPageSize())){
             queryParamVo.setPageSize(CommonConstant.DEFAULT_PAGE_SIZE);
         }
+        queryParamVo.setNow(LocalDateTime.now());
         Page<Notice> page = noticeService.pageAll(queryParamVo);
         List<NoticeVo> voList = Lists.transform(page.getContent(),s->{
             NoticeVo vo = new NoticeVo();
-            BeanUtils.copyProperties(s,vo);
+            vo.setId(s.getId());
+            vo.setCreateTime(s.getCreateTime());
+            vo.setCreator(s.getCreator());
+            vo.setEndTime(DateUtil.format(s.getEndTime()));
+            vo.setStartTime(DateUtil.format(s.getStartTime()));
+            vo.setLinkUrl(s.getLinkUrl());
+            vo.setModifyTime(s.getModifyTime());
+            vo.setNoticeBody(s.getNoticeBody());
             return vo;
         });
         Page<NoticeVo> voPage = new PageImpl<>(voList,page.getPageable(),page.getTotalElements());

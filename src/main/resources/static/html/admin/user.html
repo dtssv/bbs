@@ -51,7 +51,7 @@
     <div class="layui-container">
 
         <div class="fly-column-right layui-hide-xs">
-            <div class="layui-col-sm6" style="margin-top:6px;">
+            <div class="layui-col-md6" style="margin-top:6px;">
                 <label for="nickName" class="layui-form-label">昵称</label>
                 <div class="layui-input-block">
                     <input type="text" id="nickName" name="nickName" autocomplete="off" class="layui-input">
@@ -111,7 +111,7 @@
                 <th>注册时间</th>
                 <th>发帖数量</th>
                 <th>回复数量</th>
-                <th>操作</th>
+                <th style="width: 200px;">操作</th>
             </tr>
             </thead>
             <tbody id="dataList">
@@ -143,4 +143,16 @@
 </script>
 
 </body>
+<div class="layui-hide" id="operatorDiv">
+    <form class="layui-form">
+        <input type="hidden" id="itemId">
+        <div class="layui-inline">
+            <label class="layui-form-label">搜索选择框</label>
+            <div class="layui-input-inline">
+                <select id="category" name="category" lay-verify="required" lay-search="">
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
 </html>

@@ -41,7 +41,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     url:'/loginInfo',
     type:'post',
     dataType:'json',
-    success:function (res) {
+    success:function (res,xhr) {
       if(res.code === 1){
         $("#username-cite").empty().html(res.data.nickName);
         $(".loginedItem").show();

@@ -14,4 +14,6 @@ public class CommentQueryParamVo extends BaseParamVo {
     private Long postId;
 
     private Long userId;
+
+    private String nickName;
 }

@@ -84,4 +84,20 @@ public interface UserService {
      * @return
      */
     Page<User> findByParam(UserQueryParamVo queryParamVo);
+
+    /**
+     *
+     * @param id
+     * @param status
+     * @return
+     */
+    User changeStatus(Long id,Integer status);
+
+    /**
+     *
+     * @param id
+     * @param categoryId
+     * @return
+     */
+    Integer setModerator(Long id,Long categoryId);
 }

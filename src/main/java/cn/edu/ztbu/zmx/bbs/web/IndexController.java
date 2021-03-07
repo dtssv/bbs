@@ -9,6 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.Objects;
 
 @Controller
@@ -60,6 +65,7 @@ public class IndexController {
         return "forget";
     }
 
+
     /**
      * 用户主页
      */
@@ -69,8 +75,15 @@ public class IndexController {
     }
     @ResponseBody
     @RequestMapping(value = "loginInfo")
-    public ResultVo loginInfo(){
+    public ResultVo loginInfo(HttpServletRequest request, HttpServletResponse response)throws Exception{
         User user = LoginContext.getLoginUser();
+        HttpSession session = request.getSession();
+        Object error = session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+        if(Objects.nonNull(error)){
+            session.removeAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+            Exception ex = (Exception) error;
+            response.setHeader("errorMsg", URLEncoder.encode(ex.getMessage(),"UTF-8"));
+        }
         if(user != null){
             UserVo userVo = new UserVo();
             BeanUtils.copyProperties(user,userVo);
