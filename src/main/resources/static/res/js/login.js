@@ -26,10 +26,10 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
                 dataType:'json',
                 success:function (res,status,xhr) {
                     var errorMsg = decodeURI(xhr.getResponseHeader('errorMsg'));
-                    if(errorMsg.indexOf('Bad')){
+                    if(errorMsg.startsWith('Bad')){
                         errorMsg = "帐号不存在或密码错误";
                     }
-                    layer.msg(decodeURI(xhr.getResponseHeader('errorMsg')));
+                    layer.msg(decodeURI(errorMsg));
                 }
             });
         }
